@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Matyáš Holata</title>
   <link rel="icon" type="image/png" href="mh-ico.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet" />
   <style>
     * {
       margin: 0;
@@ -16,102 +16,97 @@
 
     html, body {
       height: 100%;
-      background: radial-gradient(circle at 20% 30%, #101010, #000);
-      overflow: hidden;
+      background: #000;
       color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
     }
 
-    /* Animated glowing grid background */
+    /* Subtle animated background grid */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background-image: 
-        linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px),
-        linear-gradient(0deg, rgba(255,255,255,0.07) 1px, transparent 1px);
-      background-size: 80px 80px;
-      animation: gridMove 25s linear infinite;
-      z-index: -2;
-      opacity: 0.3;
+      background-image:
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 100px 100px;
+      animation: gridMove 40s linear infinite;
+      z-index: -1;
+      opacity: 0.12;
     }
 
     @keyframes gridMove {
       from { background-position: 0 0; }
-      to { background-position: 80px 80px; }
+      to { background-position: 100px 100px; }
     }
 
-    /* Subtle glowing radial light overlay */
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 50% 60%, rgba(0, 100, 255, 0.15), transparent 60%);
-      z-index: -1;
-    }
-
-    /* Layout */
     .container {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100%;
-      text-align: center;
-      padding: 20px;
+      gap: 1.4rem;
+      padding: 2rem;
     }
 
-    /* Glassmorphism card */
-    .content {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255,255,255,0.03);
-      backdrop-filter: blur(18px);
-      border-radius: 20px;
-      padding: 70px 60px;
-      max-width: 620px;
-      width: 100%;
-      transform: translateY(30px);
+    /* Sequential fade-in animation */
+    .fade {
       opacity: 0;
+      transform: translateY(20px);
       animation: fadeUp 1.2s ease forwards;
     }
 
+    .logo { animation-delay: 0.2s; }
+    h1 { animation-delay: 0.6s; }
+    p { animation-delay: 1.0s; }
+    .contact { animation-delay: 1.4s; }
+    .loader { animation-delay: 1.8s; }
+    footer { animation-delay: 2.2s; }
+
     @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(30px) scale(0.98); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .logo {
-      width: 140px;
-      margin-bottom: 25px;
-      opacity: 0.95;
-      filter: drop-shadow(0 0 6px rgba(255,255,255,0.2));
+      width: 150px;
+      filter: brightness(0) invert(1);
     }
 
     h1 {
       font-size: 2.8rem;
       font-weight: 700;
-      letter-spacing: 0.5px;
-      margin-bottom: 15px;
-      background: linear-gradient(90deg, #fff, #a5baff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.05em;
+      color: #fff;
     }
 
     p {
-      font-size: 1.15rem;
-      color: #d0d0d0;
-      line-height: 1.7;
-      margin-bottom: 40px;
+      color: #ccc;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      max-width: 600px;
+    }
+
+    .contact {
+      font-size: 0.95rem;
+      color: #aaa;
+      letter-spacing: 0.03em;
     }
 
     .loader {
-      width: 52px;
-      height: 52px;
-      border: 3px solid rgba(255,255,255,0.25);
+      margin-top: 25px;
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255,255,255,0.15);
       border-top-color: #fff;
       border-radius: 50%;
-      animation: spin 1.2s linear infinite;
-      margin: 0 auto;
+      animation: spin 1s linear infinite;
     }
 
     @keyframes spin {
@@ -119,76 +114,94 @@
     }
 
     footer {
-      margin-top: 50px;
-      font-size: 0.85rem;
-      color: #888;
-      opacity: 0.7;
+      margin-top: 60px;
+      font-size: 0.9rem;
+      color: #666;
+      letter-spacing: 0.05em;
+    }
+
+    /* "To demo page" link */
+    .demo-link {
+      margin-top: 15px;
+      font-size: 1rem;
+      text-decoration: none;
+      color: #fff;
+      border-bottom: 1px solid #fff;
+      padding-bottom: 2px;
+      transition: all 0.3s ease;
+      animation-delay: 1.6s;
+    }
+
+    .demo-link:hover {
+      opacity: 0.6;
+      letter-spacing: 0.03em;
     }
 
     /* Language button */
     .lang-btn {
-      position: fixed;
-      bottom: 25px;
-      left: 25px;
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      padding: 6px 14px 6px 10px;
+      font-size: 0.9rem;
+      border: 1px solid #555;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: #fff;
-      padding: 10px 16px;
-      border-radius: 12px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      transition: 0.2s;
     }
 
     .lang-btn:hover {
-      background: rgba(255,255,255,0.18);
-      transform: translateY(-3px);
+      background: #fff;
+      color: #000;
     }
 
     .flag {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       object-fit: cover;
-      box-shadow: 0 0 6px rgba(255,255,255,0.3);
+      filter: grayscale(100%) brightness(0.9);
     }
 
     @media (max-width: 600px) {
-      .content {
-        padding: 50px 25px;
-      }
       h1 {
-        font-size: 2.1rem;
+        font-size: 2rem;
       }
       p {
         font-size: 1rem;
+      }
+      .logo {
+        width: 110px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="content">
-      <img src="mh-logo.png" alt="Matyáš Holata logo" class="logo" />
-      <h1 id="title">matyasholata.cz</h1>
-      <p id="description">
-        Tato stránka je momentálně ve výstavbě, protože vytváříme nové funkce a
-        vylepšujeme váš zážitek. Děkujeme za vaši trpělivost.
-      </p>
-      <div class="loader"></div>
-      <footer>2025 © matyasholata.cz</footer>
-    </div>
+    <img src="mh-logo.png" alt="Matyáš Holata logo" class="logo fade" />
+    <h1 id="title" class="fade">matyasholata.cz</h1>
+    <p id="description" class="fade">
+      Tato stránka je momentálně ve výstavbě, protože vytváříme nové funkce a
+      vylepšujeme váš zážitek. Děkujeme za vaši trpělivost.
+    </p>
 
-    <button class="lang-btn" id="langBtn">
-      <img id="flagIcon" src="cz.png" alt="flag" class="flag" />
-      <span id="langText">Czech</span>
-    </button>
+    <a href="#" class="demo-link fade">to demo page</a>
+
+    <div class="contact fade">📧 matyasholata0@gmail.com</div>
+
+    <div class="loader fade"></div>
+    <footer class="fade">2025 © matyasholata.cz</footer>
   </div>
+
+  <button class="lang-btn" id="langBtn">
+    <img id="flagIcon" src="cz.png" alt="flag" class="flag" />
+    <span id="langText">Czech</span>
+  </button>
 
   <script>
     const langBtn = document.getElementById("langBtn");
@@ -196,6 +209,8 @@
     const description = document.getElementById("description");
     const flagIcon = document.getElementById("flagIcon");
     const langText = document.getElementById("langText");
+    const contact = document.querySelector(".contact");
+    const demoLink = document.querySelector(".demo-link");
 
     let currentLang = "cz";
 
@@ -204,6 +219,8 @@
         title.textContent = "matyasholata.cz";
         description.innerHTML =
           "Tato stránka je momentálně ve výstavbě, protože vytváříme nové funkce a vylepšujeme váš zážitek. Děkujeme za vaši trpělivost.";
+        demoLink.textContent = "to demo page";
+        contact.textContent = "📧 matyasholata0@gmail.com";
         langText.textContent = "Czech";
         flagIcon.src = "cz.png";
         currentLang = "cz";
@@ -211,6 +228,8 @@
         title.textContent = "matyasholata.cz";
         description.innerHTML =
           "This page is currently under construction as we build new features and enhance your experience. Thank you for your patience.";
+        demoLink.textContent = "to demo page";
+        contact.textContent = "📧 matyasholata0@gmail.com";
         langText.textContent = "English";
         flagIcon.src = "us.png";
         currentLang = "en";
