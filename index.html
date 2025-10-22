@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Full-screen Stretched Image</title>
+  <style>
+    /* reset */
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    /* full-screen stretched image (will distort to fit exactly) */
+    .stretched {
+      width: 100vw;
+      height: 100vh;
+      display: block; /* removes inline gaps */
+      object-fit: fill; /* forces exact fill, may distort */
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <img src="IMG_2509.jpeg" alt="" class="stretched" />
+</body>
+</html>
