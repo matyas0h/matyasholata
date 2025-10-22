@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matyáš Holata</title>
+  <link rel="icon" type="image/png" href="mh-ico.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Base reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      background: #000;
+      color: #fff;
+    }
+
+    /* Animated background grid */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      animation: moveGrid 30s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes moveGrid {
+      from { background-position: 0 0; }
+      to { background-position: 0 80px; }
+    }
+
+    /* Main container */
+    .container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    /* Card */
+    .content {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 60px 40px;
+      max-width: 600px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .content:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Logo */
+    .logo {
+      width: 120px;
+      margin-bottom: 30px;
+      opacity: 0.95;
+    }
+
+    /* Title and text */
+    h1 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      letter-spacing: 0.5px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #ccc;
+      line-height: 1.6;
+      margin-bottom: 35px;
+    }
+
+    /* Loader */
+    .loader {
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(255,255,255,0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 50px;
+      font-size: 0.85rem;
+      color: #777;
+    }
+
+    /* Language switch button */
+    .lang-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(6px);
+    }
+
+    .lang-btn:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    .flag {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 600px) {
+      .content {
+        padding: 40px 20px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="content">
+      <img src="mh-logo.png" alt="Matyáš Holata logo" class="logo" />
+      <h1 id="title">matyasholata.cz</h1>
+      <p id="description">
+        Tato stránka je momentálně ve výstavbě, protože vytváříme nové funkce a
+        vylepšujeme váš zážitek. Děkujeme za vaši trpělivost.
+      </p>
+      <div class="loader"></div>
+      <footer>2025 © matyasholata.cz</footer>
+    </div>
+
+    <button class="lang-btn" id="langBtn">
+      <img id="flagIcon" src="cz.png" alt="flag" class="flag" />
+      <span id="langText">Czech</span>
+    </button>
+  </div>
+
+  <script>
+    const langBtn = document.getElementById("langBtn");
+    const title = document.getElementById("title");
+    const description = document.getElementById("description");
+    const flagIcon = document.getElementById("flagIcon");
+    const langText = document.getElementById("langText");
+
+    let currentLang = "cz";
+
+    langBtn.addEventListener("click", () => {
+      if (currentLang === "en") {
+        title.textContent = "matyasholata.cz";
+        description.innerHTML =
+          "Tato stránka je momentálně ve výstavbě, protože vytváříme nové funkce a vylepšujeme váš zážitek. Děkujeme za vaši trpělivost.";
+        langText.textContent = "Czech";
+        flagIcon.src = "cz.png";
+        currentLang = "cz";
+      } else {
+        title.textContent = "matyasholata.cz";
+        description.innerHTML =
+          "This page is currently under construction as we build new features and enhance your experience. Thank you for your patience.";
+        langText.textContent = "English";
+        flagIcon.src = "us.png";
+        currentLang = "en";
+      }
+    });
+  </script>
+</body>
+</html>
