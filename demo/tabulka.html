@@ -1,0 +1,125 @@
+<style>
+/* Wrapper */
+.vypocet-wrapper {
+  width: 100%;
+  max-width: 600px;
+  margin: 24px auto;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Main box */
+.vypocet-box {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  padding: 12px 16px;
+  background-color: #FDF9F5;
+  border: 1.5px solid #E7DBD0;
+  border-radius: 16px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+/* Input fields */
+.vypocet-box input[type="number"], 
+.vypocet-box input[type="text"] {
+  appearance: none;
+  font-family: inherit;
+  font-size: 18px;
+  padding: 12px 14px;
+  border: 1.5px solid #e1d6cc;
+  border-radius: 12px;
+  background: #fff;
+  text-align: center;
+  box-sizing: border-box;
+  height: 60px;
+  transition: all 0.2s ease;
+}
+
+.vypocet-box input:focus {
+  outline: none;
+  border-color: #b48a60;
+  box-shadow: 0 0 0 6px rgba(180,138,96,0.1);
+}
+
+/* Field widths desktop */
+#deti { width: 100px; }
+#vzdalenost { width: 160px; }
+#vysledek { width: 220px; font-weight: 600; }
+
+/* Operator */
+.operator {
+  font-weight: 700;
+  font-size: 26px;
+  color: #7a6b60;
+  margin: 0 4px;
+  user-select: none;
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+/* Hover effect on operator */
+.operator:hover { color: #b48a60; cursor: default; }
+
+/* Responsive for small screens */
+@media (max-width: 520px) {
+  .vypocet-box {
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: space-between;
+  }
+  #deti, #vzdalenost {
+    flex: 1 1 calc(50% - 4px);
+    min-width: 60px;
+  }
+  #vysledek {
+    flex: 1 1 100%;
+    margin-top: 10px;
+  }
+  .operator { display: none; }
+}
+
+/* Subtle animation for input changes */
+.vypocet-box input.filled {
+  background-color: #FFF7E5;
+  border-color: #E7CBA0;
+}
+</style>
+
+<div class="vypocet-wrapper">
+  <div class="vypocet-box" role="group" aria-label="Výpočet ceny kurzu">
+    <input id="deti" type="number" min="0" placeholder="Děti" aria-label="Počet dětí">
+    <input id="vzdalenost" type="number" min="0" placeholder="Dopravné (km)" aria-label="Vzdálenost v km">
+    <span class="operator">=</span>
+    <input id="vysledek" type="text" placeholder="Celkem (Kč)" readonly aria-label="Výsledek" class="filled">
+  </div>
+</div>
+
+<script>
+(function(){
+  const detiEl = document.getElementById('deti');
+  const vzdEl = document.getElementById('vzdalenost');
+  const outEl = document.getElementById('vysledek');
+
+  function formatCZK(n) {
+    return n.toLocaleString('cs-CZ') + ' Kč';
+  }
+
+  function update() {
+    const deti = parseFloat(detiEl.value) || 0;
+    const vzd = parseFloat(vzdEl.value) || 0;
+    const cestovne = vzd * 10; // cena za km
+    const kurzovne = deti * 70; // cena za dítě
+    const celkem = Math.round((cestovne + kurzovne) * 100) / 100;
+    outEl.value = formatCZK(celkem);
+  }
+
+  detiEl.addEventListener('input', update);
+  vzdEl.addEventListener('input', update);
+  outEl.value = formatCZK(0);
+})();
+</script>

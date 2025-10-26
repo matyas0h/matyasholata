@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Etiketa do škol | Fotogalerie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="ke.png" />
+  <meta name="description" content="Inovativní interaktivní kurz společenské etikety pro děti od 5 let – včetně zdravění, stolování, správného chování a oblékání. Kurz je určen pro mateřské a základní školy.">
+  <meta name="keywords" content="Etiketa do škol, Etiketa dětem, Kurzy etikety, Kurzy pro děti, s etiketa, Etiketa pro školy, Etiketa školení">
+  <meta name="author" content="Matyáš Holata">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Etiketa do škol | Kurzy etikety pro děti">
+  <meta property="og:description" content="Inovativní interaktivní kurz společenské etikety pro děti od 5 let – včetně zdravění, stolování, správného chování a oblékání. Kurz je určen pro mateřské a základní školy.">
+  <meta property="og:image" content="fotky/ms/7.jpeg">
+  <meta property="og:url" content="https://www.etiketadoskol.cz/">
+  <meta property="og:site_name" content="Etiketa do škol | Kurzy etikety pro děti">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="cs_CZ">
+  <script src="console.js"></script>
+</head>
+<body>
+  <header>
+
+        <!-- susenky 🤤 -->
+    <div id="cookie-banner" style="
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #EFE9E1;
+        color: #1f2937;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+        box-shadow: 0 -4px 14px rgba(0,0,0,0.08);
+        font-family: 'Inter', sans-serif;
+        font-size: 1.05rem;
+        line-height: 1.5;
+        z-index: 2000;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    ">
+      <span style="font-size: 2.5rem; margin-right: 15px; animation: spin 8s linear infinite;">🍪</span>
+      <span style="flex: 1; min-width: 220px; margin-right: 20px;">
+        Naše stránky používají cookies, malé soubory ukládané ve vašem zařízení, které nám pomáhají zlepšit funkčnost webu, analyzovat návštěvnost a přizpůsobit obsah vašim preferencím.
+      </span>
+      <button id="cookie-agree" style="
+          background: #6E5A45;
+          color: white;
+          border: none;
+          padding: 14px 28px;
+          border-radius: 8px;
+          font-weight: 600;
+          cursor: pointer;
+          font-size: 1rem;
+          transition: 0.3s;
+          flex-shrink: 0;
+      ">Souhlasím</button>
+    </div>
+
+    <script>
+      const banner = document.getElementById('cookie-banner');
+
+      // Hide if already accepted
+      if(localStorage.getItem('cookiesAccepted') === 'true'){
+        banner.style.display = 'none';
+      }
+
+      document.getElementById('cookie-agree').addEventListener('click', function(){
+        localStorage.setItem('cookiesAccepted', 'true');
+        // Smooth hide
+        banner.style.opacity = '0';
+        banner.style.transform = 'translateY(100%)';
+        setTimeout(() => { banner.style.display = 'none'; }, 300);
+      });
+    </script>
+
+    <style>
+      /* Slow spinning animation */
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      @media (max-width: 900px){
+        #cookie-banner {
+          flex-direction: column;
+          align-items: flex-start;
+          font-size: 0.95rem;
+          padding: 18px 20px;
+          gap: 12px;
+        }
+        #cookie-banner button {
+          width: 100%;
+          text-align: center;
+        }
+        #cookie-banner span:first-child {
+          font-size: 2rem;
+        }
+      }
+
+      @media (max-width: 500px){
+        #cookie-banner {
+          font-size: 0.9rem;
+          padding: 15px 15px;
+        }
+        #cookie-banner button {
+          padding: 12px 0;
+        }
+        #cookie-banner span:first-child {
+          font-size: 1.8rem;
+        }
+      }
+    </style>
+
+    <div class="left">
+      <a href="index.html"><img src="ke.png" alt="Logo" /></a>
+      <div class="tagline">Etiketa do škol</div>
+    </div>
+
+    <nav>
+      <ul>
+        <li><a href="index.html">DOMŮ</a></li>
+        <li><a href="onas.html">O NÁS</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle">FOTOGALERIE ▾</a>
+          <div class="dropdown-content">
+            <a href="fotogalerie-ms.html">Mateřské školy</a>
+            <a href="fotogalerie-zs.html">Základní školy</a>
+            <a href="fotogalerie-ss.html">Střední školy</a>
+          </div>
+        </li>
+        <li><a href="kontakt.html">KONTAKT</a></li>
+      </ul>
+    </nav>
+
+    <div class="menu-toggle" id="mobile-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <div class="image-wrapper">
+    <img src="fotky/ostatni/28_1.png" alt="Etiketa background" />
+  </div>
+
+  <main>
+    <section class="photo-gallery">
+      <div style="margin-top: -60px;"></div>
+<h1 style="font-size: 50px;">FOTOGALERIE</h1>
+      <p style="text-align: center; font-size: 20px; margin-top: -40px;">Základní školy</p>
+      <hr style="margin-top: 20px;height: 3px;background-color: #EFE9E1;border: none;border-radius: 100px;" />
+      <div class="gallery-grid">
+        <img src="fotky/zs/7.jpg"/>
+        <img src="fotky/zs/9.jpg"/>
+        <img src="fotky/zs/10.jpg"/>
+        <img src="fotky/zs/11.jpg"/>
+        <img src="fotky/zs/12.jpg"/>
+        <img src="fotky/zs/13.jpg"/>
+        <img src="fotky/zs/14.jpg"/>
+        <img src="fotky/zs/15.jpg"/>
+        <img src="fotky/zs/16.jpg"/>
+        <img src="fotky/zs/17.jpg"/>
+        <img src="fotky/zs/18.jpg"/>
+        <img src="fotky/zs/19.jpg"/>
+        <img src="fotky/zs/20.jpg"/>
+        <img src="fotky/zs/21.jpg"/>
+        <img src="fotky/zs/22.jpg"/>
+        <img src="fotky/zs/23.jpg"/>
+        <img src="fotky/zs/25.jpg"/>
+        <img src="fotky/zs/26.jpg"/>
+        <img src="fotky/zs/27.jpg"/>
+        <img src="fotky/zs/28.jpg"/>
+        <img src="fotky/zs/29.jpg"/>
+        <img src="fotky/zs/30.jpg"/>
+        <img src="fotky/zs/31.jpg"/>
+        <img src="fotky/zs/32.jpg"/>
+        <img src="fotky/zs/33.jpg"/>
+        <img src="fotky/zs/34.jpg"/>
+        <img src="fotky/zs/35.jpg"/>
+        <img src="fotky/zs/1.jpg"/>
+        <img src="fotky/zs/2.jpg"/>
+        <img src="fotky/zs/3.jpg"/>
+        <img src="fotky/zs/4.jpg"/>
+        <img src="fotky/zs/5.jpg"/>
+        <img src="fotky/zs/6.jpg"/>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-main">
+      <div style="margin-top: -20px;"></div>
+      <img src="https://raw.githubusercontent.com/matyas0h/ke-assets/refs/heads/main/ke%20logo%20(1).png" alt="Logo" style="width: 100px;" />
+      <h3>Jan Holata</h3>
+      <div style="margin-top: -10px;"></div>
+      <p>Kurzy etikety pro děti</p>
+      <div style="margin-bottom: 20px;"></div>
+      <i><p>Průvodce světem společenské etikety</p></i>
+      <p>2009 – 2025 © Kurzy pro děti – Jan Holata</p>
+      <div style="margin-top: 20px;"></div>
+
+      <a class="footer-a" href="https://www.linkedin.com/in/jan-holata-13517278?trk=nav_responsive_tab_profile_pic">
+        <svg xmlns="http://www.w3.org/2000/svg" class="footerbutton" viewBox="0 0 640 640"><path d="M512 96L127.9 96C110.3 96 96 110.5 96 128.3L96 511.7C96 529.5 110.3 544 127.9 544L512 544C529.6 544 544 529.5 544 511.7L544 128.3C544 110.5 529.6 96 512 96zM231.4 480L165 480L165 266.2L231.5 266.2L231.5 480L231.4 480zM198.2 160C219.5 160 236.7 177.2 236.7 198.5C236.7 219.8 219.5 237 198.2 237C176.9 237 159.7 219.8 159.7 198.5C159.7 177.2 176.9 160 198.2 160zM480.3 480L413.9 480L413.9 376C413.9 351.2 413.4 319.3 379.4 319.3C344.8 319.3 339.5 346.3 339.5 374.2L339.5 480L273.1 480L273.1 266.2L336.8 266.2L336.8 295.4L337.7 295.4C346.6 278.6 368.3 260.9 400.6 260.9C467.8 260.9 480.3 305.2 480.3 362.8L480.3 480z"/></svg>
+      </a>
+      <a class="footer-a" href="https://www.instagram.com/kurzy_etikety/">
+        <svg xmlns="http://www.w3.org/2000/svg" class="footerbutton" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M290.4 275.7C274 286 264.5 304.5 265.5 323.8C266.6 343.2 278.2 360.4 295.6 368.9C313.1 377.3 333.8 375.5 349.6 364.3C366 354 375.5 335.5 374.5 316.2C373.4 296.8 361.8 279.6 344.4 271.1C326.9 262.7 306.2 264.5 290.4 275.7zM432.7 207.3C427.5 202.1 421.2 198 414.3 195.3C396.2 188.2 356.7 188.5 331.2 188.8C327.1 188.8 323.3 188.9 320 188.9C316.7 188.9 312.8 188.9 308.6 188.8C283.1 188.5 243.8 188.1 225.7 195.3C218.8 198 212.6 202.1 207.3 207.3C202 212.5 198 218.8 195.3 225.7C188.2 243.8 188.6 283.4 188.8 308.9C188.8 313 188.9 316.8 188.9 320C188.9 323.2 188.9 327 188.8 331.1C188.6 356.6 188.2 396.2 195.3 414.3C198 421.2 202.1 427.4 207.3 432.7C212.5 438 218.8 442 225.7 444.7C243.8 451.8 283.3 451.5 308.8 451.2C312.9 451.2 316.7 451.1 320 451.1C323.3 451.1 327.2 451.1 331.4 451.2C356.9 451.5 396.2 451.9 414.3 444.7C421.2 442 427.4 437.9 432.7 432.7C438 427.5 442 421.2 444.7 414.3C451.9 396.3 451.5 356.9 451.2 331.3C451.2 327.1 451.1 323.2 451.1 319.9C451.1 316.6 451.1 312.8 451.2 308.5C451.5 283 451.9 243.6 444.7 225.5C442 218.6 437.9 212.4 432.7 207.1L432.7 207.3zM365.6 251.8C383.7 263.9 396.2 282.7 400.5 304C404.8 325.3 400.3 347.5 388.2 365.6C382.2 374.6 374.5 382.2 365.6 388.2C356.7 394.2 346.6 398.3 336 400.4C314.7 404.6 292.5 400.2 274.4 388.1C256.3 376 243.8 357.2 239.5 335.9C235.2 314.6 239.7 292.4 251.7 274.3C263.7 256.2 282.6 243.7 303.9 239.4C325.2 235.1 347.4 239.6 365.5 251.6L365.6 251.6zM394.8 250.5C391.7 248.4 389.2 245.4 387.7 241.9C386.2 238.4 385.9 234.6 386.6 230.8C387.3 227 389.2 223.7 391.8 221C394.4 218.3 397.9 216.5 401.6 215.8C405.3 215.1 409.2 215.4 412.7 216.9C416.2 218.4 419.2 220.8 421.3 223.9C423.4 227 424.5 230.7 424.5 234.5C424.5 237 424 239.5 423.1 241.8C422.2 244.1 420.7 246.2 419 248C417.3 249.8 415.1 251.2 412.8 252.2C410.5 253.2 408 253.7 405.5 253.7C401.7 253.7 398 252.6 394.9 250.5L394.8 250.5zM544 160C544 124.7 515.3 96 480 96L160 96C124.7 96 96 124.7 96 160L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 160zM453 453C434.3 471.7 411.6 477.6 386 478.9C359.6 480.4 280.4 480.4 254 478.9C228.4 477.6 205.7 471.7 187 453C168.3 434.3 162.4 411.6 161.2 386C159.7 359.6 159.7 280.4 161.2 254C162.5 228.4 168.3 205.7 187 187C205.7 168.3 228.5 162.4 254 161.2C280.4 159.7 359.6 159.7 386 161.2C411.6 162.5 434.3 168.3 453 187C471.7 205.7 477.6 228.4 478.8 254C480.3 280.3 480.3 359.4 478.8 385.9C477.5 411.5 471.7 434.2 453 452.9L453 453z"/></svg>
+      </a>
+      <a class="footer-a" href="https://www.facebook.com/KurzyEtikety">
+        <svg xmlns="http://www.w3.org/2000/svg" class="footerbutton" viewBox="0 0 640 640"><path d="M160 96C124.7 96 96 124.7 96 160L96 480C96 515.3 124.7 544 160 544L258.2 544L258.2 398.2L205.4 398.2L205.4 320L258.2 320L258.2 286.3C258.2 199.2 297.6 158.8 383.2 158.8C399.4 158.8 427.4 162 438.9 165.2L438.9 236C432.9 235.4 422.4 235 409.3 235C367.3 235 351.1 250.9 351.1 292.2L351.1 320L434.7 320L420.3 398.2L351 398.2L351 544L480 544C515.3 544 544 515.3 544 480L544 160C544 124.7 515.3 96 480 96L160 96z"/></svg>
+      </a>
+    </div>
+
+    <div class="footer-bottom">
+      <div style="margin-top: 10px;"></div>
+      <p>Developed by <a style="color: #7a6b60;" href="mailto:matyasholata0@gmail.com"><b>Matyáš Holata</b></p></a>
+      <a href="mailto:matyasholata0@gmail.com"><img class="mh-logo" src="mh-logo.png"></a>
+    </div>
+  </footer>
+
+  <button id="backToTop">↑</button>
+
+    <script>
+    const backToTop = document.getElementById("backToTop");
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        backToTop.classList.add("show");
+      } else {
+        backToTop.classList.remove("show");
+      }
+    });
+
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  </script>
+
+  <div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <img id="lightbox-img" />
+    <div class="arrow prev">&#10094;</div>
+    <div class="arrow next">&#10095;</div>
+  </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const allEls = document.querySelectorAll("main *:not(nav):not(footer)");
+  const fadeEls = Array.from(allEls).filter(el => {
+    const bg = window.getComputedStyle(el).backgroundImage;
+    return !bg || bg === "none";
+  });
+  fadeEls.forEach(el => el.classList.add("fade-in"));
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(el => observer.observe(el));
+});
+</script>
+
+
+  
+<script>
+    const header = document.querySelector("header");
+    const menuToggle = document.getElementById("mobile-menu");
+    const nav = document.querySelector("nav");
+    const dropdown = document.querySelector(".dropdown");
+    const dropdownToggle = dropdown.querySelector(".dropdown-toggle");
+    const parallaxImg = document.querySelector(".image-wrapper img");
+
+    window.addEventListener("scroll", () => {
+      header.classList.toggle("scrolled", window.scrollY > 30);
+      if (parallaxImg) {
+        const offset = window.scrollY * 0.3;
+        parallaxImg.style.transform = `translateY(${offset}px)`;
+      }
+    });
+
+    menuToggle.addEventListener("click", () => {
+      menuToggle.classList.toggle("active");
+      nav.classList.toggle("active");
+    });
+
+    ["click", "touchstart"].forEach(evt => {
+      dropdownToggle.addEventListener(evt, e => {
+        if (window.innerWidth <= 900) {
+          e.preventDefault();
+          dropdown.classList.toggle("active");
+        }
+      });
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 900) {
+        nav.classList.remove("active");
+        menuToggle.classList.remove("active");
+        dropdown.classList.remove("active");
+      }
+    });
+
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const closeBtn = document.querySelector('.lightbox .close');
+  const prevArrow = document.querySelector('.arrow.prev');
+  const nextArrow = document.querySelector('.arrow.next');
+  const galleryImages = document.querySelectorAll('.gallery-grid img');
+
+  let currentIndex = 0;
+  let zoomed = false;
+  let zoomFactor = 2;
+  let origin = { x: 0.5, y: 0.5 };
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let scrollPosition = 0;
+
+  function lockScroll() {
+    scrollPosition = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollPosition}px`;
+    document.body.style.width = '100%';
+  }
+
+  function unlockScroll() {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollPosition);
+  }
+
+  function showLightbox(index, direction = 0) {
+    currentIndex = index;
+    lightbox.style.display = 'flex';
+    lockScroll();
+
+    zoomed = false;
+    lightboxImg.style.cursor = 'zoom-in';
+    lightboxImg.style.transform = 'scale(1)';
+
+    if (direction !== 0) {
+      lightboxImg.style.transition = 'none';
+      lightboxImg.style.transform = `translateX(${direction * 100}%) scale(1)`;
+    }
+
+    lightboxImg.src = galleryImages[currentIndex].src;
+
+    requestAnimationFrame(() => {
+      lightboxImg.style.transition = 'transform 0.3s ease';
+      lightboxImg.style.transform = 'translateX(0) scale(1)';
+    });
+    }
+
+    function closeLightbox() {
+      lightbox.style.display = 'none';
+      unlockScroll();
+    }
+
+    function toggleZoom(e) {
+      const rect = lightboxImg.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+
+      origin = { x, y };
+      lightboxImg.style.transformOrigin = `${x * 100}% ${y * 100}%`;
+
+      if (!zoomed) {
+        lightboxImg.style.transform = `scale(${zoomFactor})`;
+        lightboxImg.style.cursor = 'zoom-out';
+        zoomed = true;
+      } else {
+        lightboxImg.style.transform = 'scale(1)';
+        lightboxImg.style.cursor = 'zoom-in';
+        zoomed = false;
+      }
+    }
+
+    galleryImages.forEach((img, i) => {
+      img.addEventListener('click', () => showLightbox(i));
+    });
+
+    lightboxImg.addEventListener('click', toggleZoom);
+
+    closeBtn.addEventListener('click', closeLightbox);
+
+    prevArrow.addEventListener('click', () => {
+      const prevIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+      showLightbox(prevIndex, -1);
+    });
+
+    nextArrow.addEventListener('click', () => {
+      const nextIndex = (currentIndex + 1) % galleryImages.length;
+      showLightbox(nextIndex, 1);
+    });
+
+    document.addEventListener('keydown', e => {
+      if (lightbox.style.display !== 'flex') return;
+      if (e.key === 'ArrowLeft') prevArrow.click();
+      if (e.key === 'ArrowRight') nextArrow.click();
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    lightboxImg.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    lightboxImg.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const swipeThreshold = 50;
+      if (touchEndX < touchStartX - swipeThreshold) nextArrow.click();
+      else if (touchEndX > touchStartX + swipeThreshold) prevArrow.click();
+    });
+  </script>
+</body>
+</html>
