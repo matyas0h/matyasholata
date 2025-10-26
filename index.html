@@ -1,196 +1,362 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Přihlášení | Matyáš Holata</title>
-  <link rel="icon" type="image/png" href="mh-ico.png">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { font-family: 'Syne', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Přihlášení | Matyáš Holata</title>
+<link rel="icon" type="image/png" href="mh-ico.png">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { font-family: 'Syne', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; width: 100%; }
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    --gap: 5em;
+    --line: 1px;
+    --color: rgba(255, 255, 255, 0.1);
+    background-color: #000;
+    background-image: linear-gradient(-90deg, transparent calc(var(--gap) - var(--line)), var(--color) calc(var(--gap) - var(--line) + 1px), var(--color) var(--gap)),
+                      linear-gradient(0deg, transparent calc(var(--gap) - var(--line)), var(--color) calc(var(--gap) - var(--line) + 1px), var(--color) var(--gap));
+    background-size: var(--gap) var(--gap);
+    animation: moveGrid 10s linear infinite;
+}
+@keyframes moveGrid { from { background-position: 0 0; } to { background-position: 0 100%; } }
 
-    html, body {
-      height: 100%;
-      width: 100%;
-    }
+.login-container {
+    background: #0a0a0a;
+    border: 2px solid #1a1a1a;
+    border-radius: 12px;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
+    animation: fadeIn 0.6s ease-in-out;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      --gap: 5em;
-      --line: 1px;
-      --color: rgba(255, 255, 255, 0.1);
-      background-color: #000;
-      background-image: 
-        linear-gradient(-90deg, transparent calc(var(--gap) - var(--line)), var(--color) calc(var(--gap) - var(--line) + 1px), var(--color) var(--gap)),
-        linear-gradient(0deg, transparent calc(var(--gap) - var(--line)), var(--color) calc(var(--gap) - var(--line) + 1px), var(--color) var(--gap));
-      background-size: var(--gap) var(--gap);
-      animation: moveGrid 10s linear infinite;
-    }
+h2 { font-weight: 700; font-size: 1.8rem; margin-bottom: 20px; }
+.input-group { display: flex; flex-direction: column; margin-bottom: 20px; text-align: left; position: relative; }
+.input-group label { margin-bottom: 8px; color: #ccc; display: flex; align-items: center; gap: 8px; }
+.input-group input {
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #161616;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+.input-group input:focus { border-color: #fff; }
 
-    @keyframes moveGrid {
-      from { background-position: 0 0; }
-      to { background-position: 0 100%; }
-    }
+.login-btn {
+    width: 100%;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.login-btn:hover { background-color: #e6e6e6; }
 
-    .login-container {
-      background: #0a0a0a;
-      border: 2px solid #1a1a1a;
-      border-radius: 12px;
-      padding: 40px;
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
-      animation: fadeIn 0.6s ease-in-out;
-    }
+.extra-options { margin-top: 20px; font-size: 0.9rem; color: #999; }
+.extra-options a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 6px;
+    transition: color 0.3s;
+    cursor: pointer;
+}
+.extra-options a:hover { color: #bbb; }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+.message {
+    margin-top: 16px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(5px);
+    transition: all 0.3s ease;
+}
+.message.show { opacity: 1; transform: translateY(0); }
+.message.error { color: #ff4c4c; }
+.message.success { color: #3dff85; }
 
-    h2 { font-weight: 700; font-size: 1.8rem; margin-bottom: 20px; }
+#captchaContainer { display: flex; align-items: center; gap: 10px; margin-top: 10px; width: 100%; }
+#captchaCanvas {
+    border: 2px solid #161616;
+    border-radius: 8px;
+    background-color: #000;
+    cursor: pointer;
+    width: 100%;
+    height: 100px;
+}
+#refreshCaptcha {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #1a1a1a;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+#refreshCaptcha:hover { background-color: #333; }
 
-    .input-group { display: flex; flex-direction: column; margin-bottom: 20px; text-align: left; }
-    .input-group label { margin-bottom: 8px; color: #ccc; }
-    .input-group input {
-      padding: 12px;
-      border-radius: 8px;
-      border: 2px solid #161616;
-      background-color: #000;
-      color: #fff;
-      font-size: 1rem;
-      outline: none;
-      transition: border-color 0.3s;
-    }
-    .input-group input:focus { border-color: #fff; }
-
-    .login-btn {
-      width: 100%;
-      background-color: #fff;
-      color: #000;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .login-btn:hover { background-color: #e6e6e6; }
-
-    .extra-options {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      color: #999;
-    }
-    .extra-options a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 500;
-      margin-left: 6px;
-      transition: color 0.3s;
-      cursor: pointer;
-    }
-    .extra-options a:hover { color: #bbb; }
-
-    .message {
-      margin-top: 16px;
-      font-size: 0.95rem;
-      font-weight: 500;
-      opacity: 0;
-      transform: translateY(5px);
-      transition: all 0.3s ease;
-    }
-    .message.show { opacity: 1; transform: translateY(0); }
-    .message.error { color: #ff4c4c; }
-    .message.success { color: #3dff85; }
-  </style>
+#captchaCheck {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: none;
+    position: relative;
+    flex-shrink: 0;
+}
+#captchaCheck::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid #3dff85;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) scale(0);
+    transform-origin: center;
+    transition: transform 0.4s ease;
+}
+#captchaCheck.show::after { transform: rotate(45deg) scale(1); }
+</style>
 </head>
 <body>
-  <div class="login-container">
+<div class="login-container">
     <h2>Přihlášení</h2>
     <div class="input-group">
-      <label for="email">E-mail</label>
-      <input type="email" id="email" placeholder="Zadejte svůj e-mail">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="Zadejte svůj e-mail">
     </div>
     <div class="input-group">
-      <label for="password">Heslo</label>
-      <input type="password" id="password" placeholder="Zadejte své heslo">
+        <label for="password">Heslo</label>
+        <input type="password" id="password" placeholder="Zadejte své heslo">
+    </div>
+    <div class="input-group">
+        <label>Ověření captcha <div id="captchaCheck"></div></label>
+        <div id="captchaContainer">
+            <canvas id="captchaCanvas"></canvas>
+            <button id="refreshCaptcha" type="button">↻</button>
+        </div>
     </div>
     <button class="login-btn" id="loginBtn">Přihlásit se</button>
     <div class="extra-options">
-      Zapomněli jste heslo?
-      <a id="forgotPassword">Obnovit</a>
+        Zapomněli jste heslo? <a id="forgotPassword">Obnovit</a>
     </div>
     <div id="message" class="message"></div>
-  </div>
+</div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyATqf1LyxXh_pSn39lVq33cg3Kz12tZGD4",
-      authDomain: "test-33ed2.firebaseapp.com",
-      projectId: "test-33ed2",
-      storageBucket: "test-33ed2.firebasestorage.app",
-      messagingSenderId: "223025585073",
-      appId: "1:223025585073:web:ac5b04e7e1eca74ccd7b90",
-      measurementId: "G-D3XS94DG55"
-    };
+const firebaseConfig = {
+    apiKey: "AIzaSyATqf1LyxXh_pSn39lVq33cg3Kz12tZGD4",
+    authDomain: "test-33ed2.firebaseapp.com",
+    projectId: "test-33ed2",
+    storageBucket: "test-33ed2.firebasestorage.app",
+    messagingSenderId: "223025585073",
+    appId: "1:223025585073:web:ac5b04e7e1eca74ccd7b90",
+    measurementId: "G-D3XS94DG55"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+const messageBox = document.getElementById("message");
+const loginBtn = document.getElementById("loginBtn");
+const forgotLink = document.getElementById("forgotPassword");
 
-    const messageBox = document.getElementById("message");
-    const loginBtn = document.getElementById("loginBtn");
-    const forgotLink = document.getElementById("forgotPassword");
+function showMessage(text, type) {
+    messageBox.textContent = text;
+    messageBox.className = "message " + type + " show";
+}
 
-    function showMessage(text, type) {
-      messageBox.textContent = text;
-      messageBox.className = "message " + type + " show";
+const captchaCanvas = document.getElementById("captchaCanvas");
+const refreshBtn = document.getElementById("refreshCaptcha");
+const captchaCheck = document.getElementById("captchaCheck");
+const ctx = captchaCanvas.getContext("2d");
+
+let particles = [];
+let correctX, correctY;
+let solved = false;
+let width = captchaCanvas.clientWidth;
+let height = captchaCanvas.clientHeight;
+
+function createParticles() {
+    particles = [];
+    for(let i=0;i<150;i++){
+        particles.push({
+            x: Math.random()*width,
+            y: Math.random()*height,
+            r: Math.random()*2+1,
+            speedX: (Math.random()-0.5)*0.5,
+            speedY: (Math.random()-0.5)*0.5
+        });
+    }
+}
+
+let points = [];
+let circleOpacity = 1;
+
+function createPoints() {
+    points = [];
+    const expandedWidth = width * 1.5;
+    const expandedHeight = height * 1.5;
+    const offsetX = (expandedWidth - width) / 2;
+    const offsetY = (expandedHeight - height) / 2;
+
+    for(let i=0;i<30;i++){
+        points.push({
+            x: Math.random()*expandedWidth - offsetX,
+            y: Math.random()*expandedHeight - offsetY,
+            vx: (Math.random()-0.5)*0.5,
+            vy: (Math.random()-0.5)*0.5
+        });
+    }
+}
+
+function drawLines() {
+    for(let i=0;i<points.length;i++){
+        for(let j=i+1;j<points.length;j++){
+            const dx = points[i].x - points[j].x;
+            const dy = points[i].y - points[j].y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            if(dist < 120){
+                if((points[i].x >= 0 && points[i].x <= width && points[i].y >= 0 && points[i].y <= height) ||
+                   (points[j].x >= 0 && points[j].x <= width && points[j].y >= 0 && points[j].y <= height)) {
+                    const alpha = 1 - dist / 120;
+                    ctx.strokeStyle = `rgba(${Math.floor(255*alpha)},${Math.floor(255*alpha)},${Math.floor(255*alpha)},${alpha})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(points[i].x, points[i].y);
+                    ctx.lineTo(points[j].x, points[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+}
+
+function animateCaptcha() {
+    width = captchaCanvas.clientWidth;
+    height = captchaCanvas.clientHeight;
+    ctx.clearRect(0,0,width,height);
+
+    points.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        const expandedWidth = width * 1.5;
+        const expandedHeight = height * 1.5;
+        const offsetX = (expandedWidth - width) / 2;
+        const offsetY = (expandedHeight - height) / 2;
+
+        if(p.x < -offsetX || p.x > width + offsetX) p.vx *= -1;
+        if(p.y < -offsetY || p.y > height + offsetY) p.vy *= -1;
+    });
+
+    drawLines();
+
+    particles.forEach(p=>{
+        p.x += p.speedX;
+        p.y += p.speedY;
+        if(p.x<0||p.x>width) p.speedX*=-1;
+        if(p.y<0||p.y>height) p.speedY*=-1;
+        ctx.fillStyle = 'rgba(200,200,200,0.2)';
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fill();
+    });
+
+    if(!solved || circleOpacity>0){
+        ctx.save();
+        ctx.globalAlpha = 0.5 * circleOpacity;
+        ctx.shadowColor = 'rgba(0,0,0,0.3)';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.fillStyle = 'rgba(200,200,200,1)';
+        ctx.beginPath();
+        ctx.arc(correctX, correctY, 12, 0, Math.PI*2);
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+        ctx.stroke();
+        ctx.restore();
+
+        if(solved) circleOpacity -= 0.02;
     }
 
-    loginBtn.addEventListener("click", () => {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+    requestAnimationFrame(animateCaptcha);
+}
 
-      if (!email || !password) {
-        showMessage("Vyplň prosím všechna pole.", "error");
-        return;
-      }
+function drawCaptcha() {
+    width = captchaCanvas.clientWidth;
+    height = captchaCanvas.clientHeight;
+    captchaCanvas.width = width;
+    captchaCanvas.height = height;
+    solved = false;
+    captchaCheck.style.display = 'none';
+    correctX = Math.random() * (width - 40) + 20;
+    correctY = Math.random() * (height - 40) + 20;
+    createParticles();
+    createPoints();
+}
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          window.location.href = "/demo";
-        })
-        .catch((error) => {
-          const msg = error.code === "auth/invalid-credential"
-            ? "Nesprávný e-mail nebo heslo."
-            : error.message.replace("Firebase:", "").trim();
-          showMessage(msg, "error");
-        });
+captchaCanvas.addEventListener("click", e=>{
+    if(solved) return;
+    const rect = captchaCanvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const distance = Math.hypot(x - correctX, y - correctY);
+    if(distance<=12){
+        solved = true;
+        captchaCheck.style.display='inline-block';
+        setTimeout(()=>{captchaCheck.classList.add('show');},50);
+    } else {
+        showMessage("Špatně, klikněte znovu.","error");
+    }
+});
+
+refreshBtn.addEventListener("click", ()=>{ if(!solved) drawCaptcha(); });
+
+drawCaptcha();
+animateCaptcha();
+
+loginBtn.addEventListener("click", ()=>{
+    const email=document.getElementById("email").value.trim();
+    const password=document.getElementById("password").value.trim();
+    if(!email||!password){showMessage("Vyplň prosím všechna pole.","error"); return;}
+    if(!solved){showMessage("Proveďte captcha ověření.","error"); return;}
+    signInWithEmailAndPassword(auth,email,password)
+    .then(()=>{window.location.href="/demo";})
+    .catch(error=>{
+        const msg=error.code==="auth/invalid-credential"?"Nesprávný e-mail nebo heslo.":error.message.replace("Firebase:","").trim();
+        showMessage(msg,"error");
     });
+});
 
-    forgotLink.addEventListener("click", () => {
-      const email = prompt("Zadej svůj e-mail pro obnovení hesla:");
-      if (!email) return;
+forgotLink.addEventListener("click",()=>{
+    const email = prompt("Zadej svůj e-mail pro obnovení hesla:");
+    if(!email) return;
+    sendPasswordResetEmail(auth,email)
+    .then(()=>{alert("E-mail pro obnovení hesla byl odeslán!");})
+    .catch(()=>{alert("Nastala chyba při odesílání e-mailu.");});
+});
+</script>
 
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
-          alert("E-mail pro obnovení hesla byl odeslán!");
-        })
-        .catch((error) => {
-          const msg = error.code === "auth/user-not-found"
-            ? "Tento e-mail není registrován."
-            : "Nastala chyba při odesílání e-mailu.";
-          alert(msg);
-        });
-    });
-  </script>
 </body>
 </html>
