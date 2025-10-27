@@ -235,7 +235,7 @@
   </header>
 
   <div class="image-wrapper">
-    <img src="fotky/ms/7.jpeg" alt="Etiketa background" />
+    <img src="fotky/ms/7.jpeg" alt="Etiketa background"/>
   </div>
 
   <main>
@@ -271,7 +271,7 @@
         <button class="main-left-btn" data-target="1">Zjistit více</button>
       </div>
       <div class="main-right">
-        <img src="etiketa.jpg" style="width: 500px;height: 599px;">
+        <img src="etiketa.jpg">
       </div>
     </div>
 
@@ -305,87 +305,90 @@
 
     <br>
 
-    <section class="pdf-text-section" id="pdf-text-section">
-      <div class="pdf-text-grid" style="margin-top: -50px;">
-        <div class="pdf-text-left">
-          <p style="text-align: justify;">
-            Nikým nebyla stanovena přesná věková hranice, kdy by mělo dítě začít osvojovat si etiketu – tedy zásady společenského chování. Záleží totiž na každém jednotlivci a jeho mentální vyspělosti, schopnosti vnímat okolí a chápat souvislosti. V rodině se děti od nejútlejšího věku seznamují s principy morálky a základními pravidly soužití, které tvoří pevný základ jejich osobního i společenského chování. My tuto výchovu doplňujeme o nadstavbu v podobě konkrétních pravidel etikety, jež pomáhají dětem orientovat se v různých společenských situacích. Naším cílem je přiblížit dětem základní znalosti z oblasti etikety, ukázat jim, jak se chovat při stolování, jak správně zvolit oblečení do školy, divadla či kina, a naučit je, jak se vhodně prezentovat při setkáních s ostatními lidmi. Témata a způsob vyjadřování přizpůsobujeme věku a schopnostem dětí tak, aby byla prezentovaná pravidla srozumitelná a přístupná i pro ty nejmenší – od pěti let věku. Takto získávají první zkušenosti s kulturním a společenským chováním, které se postupně stávají součástí jejich každodenního života a pomáhají jim lépe se orientovat ve světě kolem sebe.
-          </p>
-        </div>
-        <div class="pdf-text-right">
-          <a href="http://admin.spacirstudio.cz/Assets/files/ostatni/letak.pdf" target="_blank">
-            <img src="fotky/ostatni/letak3.png" alt="Leták PDF">
-          </a>
-        </div>
+<section class="pdf-text-section" id="pdf-text-section">
+  <div class="pdf-text-grid">
+    <div class="pdf-text-left">
+      <p>
+        Nikým nebyla stanovena přesná věková hranice, kdy by mělo dítě začít osvojovat si etiketu – tedy zásady společenského chování. Záleží totiž na každém jednotlivci a jeho mentální vyspělosti, schopnosti vnímat okolí a chápat souvislosti. V rodině se děti od nejútlejšího věku seznamují s principy morálky a základními pravidly soužití, které tvoří pevný základ jejich osobního i společenského chování. My tuto výchovu doplňujeme o nadstavbu v podobě konkrétních pravidel etikety, jež pomáhají dětem orientovat se v různých společenských situacích. Naším cílem je přiblížit dětem základní znalosti z oblasti etikety, ukázat jim, jak se chovat při stolování, jak správně zvolit oblečení do školy, divadla či kina, a naučit je, jak se vhodně prezentovat při setkáních s ostatními lidmi. Témata a způsob vyjadřování přizpůsobujeme věku a schopnostem dětí tak, aby byla prezentovaná pravidla srozumitelná a přístupná i pro ty nejmenší – od pěti let věku. Takto získávají první zkušenosti s kulturním a společenským chováním, které se postupně stávají součástí jejich každodenního života a pomáhají jim lépe se orientovat ve světě kolem sebe.
+      </p>
+    </div>
+    <div class="pdf-text-right-wrapper">
+      <div class="pdf-text-right">
+        <a href="letak.pdf" target="_blank">
+          <img src="fotky/ostatni/letak3.png" alt="Leták PDF">
+        </a>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <style>
-      .pdf-text-section {
-        width: 90%;
-        max-width: 1200px;
-        margin: 60px auto;
-        display: flex;
-        justify-content: center;
-        align-items: stretch;
-      }
+<style>
+    .pdf-text-grid {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
 
+    .pdf-text-left {
+      flex: 1 1 0;
+      min-width: 300px;
+      margin-right: 50px;
+    }
+
+    .pdf-text-right-wrapper {
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 300px;
+    }
+
+    .pdf-text-right img {
+      width: 100%;
+      max-width: 450px;
+      height: auto;
+      object-fit: contain;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .pdf-text-right img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    @media (max-width: 900px) {
       .pdf-text-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-        align-items: stretch;
-        width: 100%;
+        flex-direction: column;
       }
 
       .pdf-text-left {
-        margin-left: -55px;
-        display: flex;
-        align-items: stretch;
-        justify-content: flex-start;
+        margin-right: 0;
       }
 
-      .pdf-text-left p {
-        font-size: 18px;
-        line-height: 1.6;
-        color: #333;
-        margin: 0;
-      }
-
-      .pdf-text-right {
-        margin-right: -55px;
-        display: flex;
-        align-items: stretch;
-        justify-content: flex-end;
+      .pdf-text-right-wrapper {
+        justify-content: center;
       }
 
       .pdf-text-right img {
-        height: 100%;
-        object-fit: contain;
-        border-radius: 16px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        margin-top: 50px;
+        max-width: 90%;
       }
+    }
+</style>
 
-      @media (max-width: 900px) {
-        .pdf-text-grid {
-          grid-template-columns: 1fr;
-          gap: 20px;
-        }
-        .pdf-text-left, .pdf-text-right {
-          justify-content: center;
-        }
-        .pdf-text-right img {
-          width: 100%;
-          height: auto;
-        }
-      }
-    </style>
 
     <br>
     <br>
     <br>
 
     <div style="background:url('fotky/ms/12.jpeg') center/cover no-repeat;width:100vw;max-height:75vh;height:100vh;position:relative;left:50%;transform:translateX(-50%);filter:brightness(50%);"></div>
+
+    <h1 style="display: block;position: relative;top: -250px;visibility: hidden;" id="5">aaa</h1>
+
+    <div style="margin-bottom: -100px;"></div>
 
     <br>
     <br>
@@ -607,6 +610,119 @@
         <button type="submit" class="form-btn">ODESLAT</button>
       </form>
     </section>
+
+    <div id="captchaOverlay">
+      <div class="captchaModal">
+        <h2>Ověření</h2>
+        <p>Pro odeslání formuláře vyřešte CAPTCHA:</p>
+        <div class="captchaVisual">
+          <div class="block" style="--i:0;"></div>
+          <div class="block" style="--i:1;"></div>
+          <div class="block" style="--i:2;"></div>
+          <div class="block" style="--i:3;"></div>
+          <div class="block" style="--i:4;"></div>
+        </div>
+        <input type="text" id="captchaInput" placeholder="Zadejte číslo z obrázku">
+        <button id="captchaSubmit">Odeslat</button>
+      </div>
+    </div>
+
+    <style>
+    #captchaOverlay {
+      position: fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.4);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      z-index: 2000;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity 0.3s ease;
+    }
+    #captchaOverlay.active {
+      opacity:1;
+      pointer-events:auto;
+    }
+    .captchaModal {
+      background:#f8f5f2;
+      padding:40px 50px;
+      border-radius:20px;
+      border:1px solid #e0d7cc;
+      text-align:center;
+      max-width:400px;
+      width:90%;
+      box-shadow:0 8px 22px rgba(0,0,0,0.05);
+    }
+    .captchaModal h2 { font-size:1.8rem; color:#1f2937; margin-bottom:16px; }
+    .captchaModal p { font-size:1rem; color:#4b5563; margin-bottom:24px; }
+    #captchaInput {
+      padding:12px 16px;
+      border-radius:10px;
+      border:1px solid #d4c8b8;
+      font-size:1rem;
+      width:60%;
+      margin-bottom:20px;
+    }
+    #captchaSubmit {
+      background:#6E5A45;
+      color:white;
+      border:none;
+      padding:12px 24px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      transition:0.3s;
+    }
+    #captchaSubmit:hover { background:#524435; transform:translateY(-2px); }
+
+    .captchaVisual {
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      margin-bottom:20px;
+    }
+    .captchaVisual .block {
+      width:12px; height:12px;
+      background:#6E5A45;
+      border-radius:3px;
+      animation: moveBlock 1s infinite alternate;
+      animation-delay: calc(var(--i) * 0.1s);
+    }
+    @keyframes moveBlock {
+      0% { transform: translateY(0); opacity:0.6; }
+      100% { transform: translateY(-10px); opacity:1; }
+    }
+    </style>
+
+    <script>
+    const form = document.querySelector('.demand-form');
+    const overlay = document.getElementById('captchaOverlay');
+    const captchaInput = document.getElementById('captchaInput');
+    const captchaSubmit = document.getElementById('captchaSubmit');
+
+    let captchaNumber;
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      captchaNumber = Math.floor(Math.random()*51);
+      captchaInput.value = '';
+      captchaInput.placeholder = `Zadejte číslo ${captchaNumber}`;
+      overlay.classList.add('active');
+    });
+
+    captchaSubmit.addEventListener('click', () => {
+      if(parseInt(captchaInput.value) === captchaNumber){
+        overlay.classList.remove('active');
+        form.submit();
+      } else {
+        alert('Chybný vstup, zkuste to znovu.');
+        captchaInput.value='';
+      }
+    });
+    </script>
 
     <div style="margin-bottom: -170px;"></div>
   </main>
