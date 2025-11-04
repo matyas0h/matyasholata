@@ -1,366 +1,422 @@
-<!DOCTYPE html>
-<html lang="cs">
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Přihlášení | Matyáš Holata</title>
-<link rel="icon" type="image/png" href="mh-ico.png">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Case Animation Picker</title>
 <style>
-* { font-family: 'Syne', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
-html, body { height: 100%; width: 100%; }
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    --gap: 5em;
-    --line: 1px;
-    --color: rgba(255, 255, 255, 0.1);
-    background-color: #000;
-    background-image: linear-gradient(-90deg, transparent calc(var(--gap) - var(--line)), var(--color) calc(var(--gap) - var(--line) + 1px), var(--color) var(--gap)),
-                      linear-gradient(0deg, transparent calc(var(--gap) - var(--line)), var(--color) calc(var(--gap) - var(--line) + 1px), var(--color) var(--gap));
-    background-size: var(--gap) var(--gap);
-    animation: moveGrid 10s linear infinite;
-}
-@keyframes moveGrid { from { background-position: 0 0; } to { background-position: 0 100%; } }
+  :root{
+    --bg:#0f1724;
+    --card:#0b1220;
+    --accent:#ffb547;
+    --muted:#9aa7bf;
+    --glass: rgba(255,255,255,0.03);
+  }
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;}
+  body{
+    background: linear-gradient(180deg,#071022 0%, #071a2b 100%);
+    color: #dfe9f3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px;
+    box-sizing:border-box;
+  }
 
-.login-container {
-    background: #0a0a0a;
-    border: 2px solid #1a1a1a;
-    border-radius: 12px;
-    padding: 40px;
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
-    animation: fadeIn 0.6s ease-in-out;
-}
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .app{
+    width:980px;
+    max-width:96%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius:14px;
+    padding:18px;
+    box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    display:grid;
+    gap:16px;
+    grid-template-columns: 360px 1fr;
+    align-items:start;
+  }
 
-h2 { font-weight: 700; font-size: 1.8rem; margin-bottom: 20px; }
-.input-group { display: flex; flex-direction: column; margin-bottom: 20px; text-align: left; position: relative; }
-.input-group label { margin-bottom: 8px; color: #ccc; display: flex; align-items: center; gap: 8px; }
-.input-group input {
-    padding: 12px;
-    border-radius: 8px;
-    border: 2px solid #161616;
-    background-color: #000;
-    color: #fff;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
-}
-.input-group input:focus { border-color: #fff; }
+  .panel{
+    background:var(--card);
+    border-radius:10px;
+    padding:14px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+  }
 
-.login-btn {
-    width: 100%;
-    background-color: #fff;
-    color: #000;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.login-btn:hover { background-color: #e6e6e6; }
+  h2{margin:0 0 8px 0;font-size:18px}
+  p.small{margin:0;color:var(--muted);font-size:13px}
 
-.extra-options { margin-top: 20px; font-size: 0.9rem; color: #999; }
-.extra-options a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    margin-left: 6px;
-    transition: color 0.3s;
-    cursor: pointer;
-}
-.extra-options a:hover { color: #bbb; }
+  /* inputs */
+  .players{
+    display:flex;flex-direction:column;gap:8px;margin-top:8px;
+    max-height:420px; overflow:auto; padding-right:6px;
+  }
+  .row{
+    display:flex;gap:8px;align-items:center;
+  }
+  .row input[type="text"], .row input[type="number"]{
+    width:100%; padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);
+    background:var(--glass); color:inherit; outline:none;
+    box-sizing:border-box;
+  }
+  .row input[type="number"]{max-width:110px;text-align:right;}
+  .row .remove{
+    background:transparent;border:0;color:#ff6b6b;font-weight:700;cursor:pointer;padding:6px;border-radius:6px;
+  }
 
-.message {
-    margin-top: 16px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    opacity: 0;
-    transform: translateY(5px);
-    transition: all 0.3s ease;
-}
-.message.show { opacity: 1; transform: translateY(0); }
-.message.error { color: #ff4c4c; }
-.message.success { color: #3dff85; }
+  .controls{display:flex;gap:8px;margin-top:12px;}
+  .btn{
+    padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:600;
+  }
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted);}
+  .btn.primary{background:var(--accent);color:#06121a; box-shadow:0 6px 18px rgba(255,181,71,0.14);}
 
-#captchaContainer { display: flex; align-items: center; gap: 10px; margin-top: 10px; width: 100%; }
-#captchaCanvas {
-    border: 2px solid #161616;
-    border-radius: 8px;
-    background-color: #000;
-    cursor: pointer;
-    width: 100%;
-    height: 100px;
-}
-#refreshCaptcha {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 8px;
-    background-color: #1a1a1a;
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-#refreshCaptcha:hover { background-color: #333; }
+  /* picker area */
+  .picker-wrap{display:flex;flex-direction:column;gap:12px;padding-left:12px;}
+  .stage{
+    height:180px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.04));
+    border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+  }
+  /* center marker - winner lands here */
+  .marker{
+    position:absolute;left:50%;top:0;transform:translateX(-50%);
+    height:100%;width:120px;pointer-events:none;
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,0.03);
+    display:flex;align-items:center;justify-content:center;
+  }
 
-#captchaCheck {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: none;
-    position: relative;
-    flex-shrink: 0;
-}
-#captchaCheck::after {
-    content: '';
-    position: absolute;
-    left: 6px;
-    top: 2px;
-    width: 6px;
-    height: 12px;
-    border: solid #3dff85;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg) scale(0);
-    transform-origin: center;
-    transition: transform 0.4s ease;
-}
-#captchaCheck.show::after { transform: rotate(45deg) scale(1); }
+  /* carousel container */
+  .carousel{
+    display:flex;gap:12px; align-items:center;
+    will-change:transform; padding:12px 40px;
+    transform:translateX(0);
+    transition:transform 2.8s cubic-bezier(.12,.72,.19,1);
+  }
+
+  .card{
+    width:110px; min-width:110px; height:140px; border-radius:10px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04));
+    display:flex;flex-direction:column;align-items:center;justify-content:center; gap:6px;
+    box-shadow: 0 6px 18px rgba(2,6,23,0.5), inset 0 1px 0 rgba(255,255,255,0.02);
+    transition:transform .18s ease, box-shadow .18s ease;
+    padding:8px; box-sizing:border-box;
+  }
+  .card.winner{
+    transform:translateY(-8px) scale(1.06);
+    box-shadow: 0 18px 36px rgba(0,0,0,0.6), 0 0 0 3px rgba(255,181,71,0.08);
+  }
+  .card .name{font-weight:700;text-align:center;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
+  .card .amt{font-size:12px;color:var(--muted);}
+
+  /* small footer */
+  .footer{display:flex;justify-content:space-between;align-items:center;gap:12px;}
+  @media (max-width:900px){
+    .app{grid-template-columns:1fr; padding:12px;}
+    .picker-wrap{padding-left:0;}
+  }
 </style>
 </head>
 <body>
-<div class="login-container">
-    <h2>Přihlášení</h2>
-    <div class="input-group">
-        <label for="email">E-mail</label>
-        <input type="email" id="email" placeholder="Zadejte svůj e-mail">
+<div class="app" role="application" aria-label="Case picker app">
+  <div class="panel" aria-hidden="false">
+    <h2>Players & Bets</h2>
+    <p class="small">Enter names and bet amounts. Amounts determine winning chance (weights).</p>
+
+    <div style="margin-top:10px;display:flex;gap:8px;">
+      <button id="addBtn" class="btn ghost" type="button">+ Add player</button>
+      <button id="clearBtn" class="btn ghost" type="button">Clear all</button>
     </div>
-    <div class="input-group">
-        <label for="password">Heslo</label>
-        <input type="password" id="password" placeholder="Zadejte své heslo">
+
+    <div class="players" id="playersList" aria-live="polite"></div>
+
+    <div class="controls">
+      <button id="rollBtn" class="btn primary" type="button">Roll</button>
+      <button id="previewBtn" class="btn ghost" type="button">Preview wheel</button>
     </div>
-    <div class="input-group">
-        <label>Ověření captcha <div id="captchaCheck"></div></label>
-        <div id="captchaContainer">
-            <canvas id="captchaCanvas"></canvas>
-            <button id="refreshCaptcha" type="button">↻</button>
-        </div>
+
+    <div style="margin-top:12px;color:var(--muted);font-size:13px;">
+      <strong>Notes:</strong> empty amount → treated as 1. Negative and zero amounts are ignored when computing chances.
     </div>
-    <button class="login-btn" id="loginBtn">Přihlásit se</button>
-    <div class="extra-options">
-        Zapomněli jste heslo? <a id="forgotPassword">Obnovit</a>
+  </div>
+
+  <div class="panel picker-wrap" aria-hidden="false">
+    <h2 style="margin-bottom:3px">Picker</h2>
+    <p class="small">Watch the animation — winner will be selected and highlighted, then app resets.</p>
+
+    <div class="stage" id="stage" role="region" aria-label="Picker stage">
+      <div class="carousel" id="carousel" aria-live="polite" aria-atomic="true"></div>
+      <div class="marker" aria-hidden="true"></div>
     </div>
-    <div id="message" class="message"></div>
+
+    <div class="footer" style="margin-top:8px">
+      <div style="font-size:13px;color:var(--muted)">Last winner: <span id="lastWinner">—</span></div>
+      <div style="font-size:13px;color:var(--muted)">Players: <span id="countPlayers">0</span></div>
+    </div>
+  </div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+<script>
+/*
+  Case Animation Picker
+  - Weighted random pick by amount
+  - Carousel animation: we calculate final transform so the winner card lands under the center marker
+  - After picking, highlight winner, show it, then reset the UI
+*/
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC-NtORtf_kX4baFqpELxgaXeFQ5I0AqKM",
-  authDomain: "matyasholata-cz.firebaseapp.com",
-  projectId: "matyasholata-cz",
-  storageBucket: "matyasholata-cz.firebasestorage.app",
-  messagingSenderId: "786028052149",
-  appId: "1:786028052149:web:56005b616ea202c40208fc",
-  measurementId: "G-FBT79JS0T0"
-};
+// DOM references
+const playersList = document.getElementById('playersList');
+const addBtn = document.getElementById('addBtn');
+const clearBtn = document.getElementById('clearBtn');
+const rollBtn = document.getElementById('rollBtn');
+const previewBtn = document.getElementById('previewBtn');
+const carousel = document.getElementById('carousel');
+const lastWinnerSpan = document.getElementById('lastWinner');
+const countPlayersSpan = document.getElementById('countPlayers');
+const stage = document.getElementById('stage');
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+// Helpers
+function createPlayerRow(name = '', amt = '') {
+  const row = document.createElement('div');
+  row.className = 'row';
+  row.innerHTML = `
+    <input type="text" class="pname" placeholder="Player name" value="${escapeHtml(name)}" aria-label="Player name" />
+    <input type="number" min="0" step="any" class="pamt" placeholder="Amount" value="${escapeHtml(amt)}" aria-label="Player bet amount" />
+    <button class="remove" title="Remove player" aria-label="Remove player">✕</button>
+  `;
+  row.querySelector('.remove').addEventListener('click', () => {
+    row.remove();
+    updateCounts();
+  });
+  row.querySelector('.pname').addEventListener('input', updateCounts);
+  row.querySelector('.pamt').addEventListener('input', updateCounts);
+  return row;
+}
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
 
-const messageBox = document.getElementById("message");
-const loginBtn = document.getElementById("loginBtn");
-const forgotLink = document.getElementById("forgotPassword");
-
-function showMessage(text, type) {
-    messageBox.textContent = text;
-    messageBox.className = "message " + type + " show";
+function updateCounts() {
+  const players = getPlayers();
+  countPlayersSpan.textContent = players.length;
+  rollBtn.disabled = players.length < 1;
 }
 
-const captchaCanvas = document.getElementById("captchaCanvas");
-const refreshBtn = document.getElementById("refreshCaptcha");
-const captchaCheck = document.getElementById("captchaCheck");
-const ctx = captchaCanvas.getContext("2d");
-
-let particles = [];
-let correctX, correctY;
-let solved = false;
-let width = captchaCanvas.clientWidth;
-let height = captchaCanvas.clientHeight;
-
-function createParticles() {
-    particles = [];
-    for(let i=0;i<150;i++){
-        particles.push({
-            x: Math.random()*width,
-            y: Math.random()*height,
-            r: Math.random()*2+1,
-            speedX: (Math.random()-0.5)*0.5,
-            speedY: (Math.random()-0.5)*0.5
-        });
-    }
+// Collect players from UI
+function getPlayers(){
+  const rows = Array.from(playersList.querySelectorAll('.row'));
+  return rows.map(r => {
+    const name = r.querySelector('.pname').value.trim() || 'Unnamed';
+    const amtStr = r.querySelector('.pamt').value.trim();
+    const amt = amtStr === '' ? 1 : Number(amtStr);
+    return { name, amt: isFinite(amt) ? amt : 0 };
+  }).filter(p => p.name); // filter out empty names (shouldn't happen)
 }
 
-let points = [];
-let circleOpacity = 1;
-
-function createPoints() {
-    points = [];
-    const expandedWidth = width * 1.5;
-    const expandedHeight = height * 1.5;
-    const offsetX = (expandedWidth - width) / 2;
-    const offsetY = (expandedHeight - height) / 2;
-
-    for(let i=0;i<30;i++){
-        points.push({
-            x: Math.random()*expandedWidth - offsetX,
-            y: Math.random()*expandedHeight - offsetY,
-            vx: (Math.random()-0.5)*0.5,
-            vy: (Math.random()-0.5)*0.5
-        });
-    }
+// Weighted random pick
+function weightedRandomIndex(weights){
+  // remove non-positive weights for chance computation,
+  // but keep them in array if user explicitly put 0 — they just get zero chance.
+  const tot = weights.reduce((s,w)=> s + (w>0? w : 0), 0);
+  if(tot <= 0){
+    // fallback: uniform among indices
+    return Math.floor(Math.random() * weights.length);
+  }
+  let r = Math.random() * tot;
+  for(let i=0;i<weights.length;i++){
+    const w = Math.max(0, weights[i]);
+    if(r < w) return i;
+    r -= w;
+  }
+  // fallback
+  return weights.length - 1;
 }
 
-function drawLines() {
-    for(let i=0;i<points.length;i++){
-        for(let j=i+1;j<points.length;j++){
-            const dx = points[i].x - points[j].x;
-            const dy = points[i].y - points[j].y;
-            const dist = Math.sqrt(dx*dx + dy*dy);
-            if(dist < 120){
-                if((points[i].x >= 0 && points[i].x <= width && points[i].y >= 0 && points[i].y <= height) ||
-                   (points[j].x >= 0 && points[j].x <= width && points[j].y >= 0 && points[j].y <= height)) {
-                    const alpha = 1 - dist / 120;
-                    ctx.strokeStyle = `rgba(${Math.floor(255*alpha)},${Math.floor(255*alpha)},${Math.floor(255*alpha)},${alpha})`;
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    ctx.moveTo(points[i].x, points[i].y);
-                    ctx.lineTo(points[j].x, points[j].y);
-                    ctx.stroke();
-                }
-            }
-        }
-    }
-}
-
-function animateCaptcha() {
-    width = captchaCanvas.clientWidth;
-    height = captchaCanvas.clientHeight;
-    ctx.clearRect(0,0,width,height);
-
-    points.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        const expandedWidth = width * 1.5;
-        const expandedHeight = height * 1.5;
-        const offsetX = (expandedWidth - width) / 2;
-        const offsetY = (expandedHeight - height) / 2;
-
-        if(p.x < -offsetX || p.x > width + offsetX) p.vx *= -1;
-        if(p.y < -offsetY || p.y > height + offsetY) p.vy *= -1;
+// Build carousel cards (repeated to give nice long scroll)
+function buildCarousel(players, repeat = 8){
+  carousel.style.transition = 'none';
+  carousel.innerHTML = '';
+  // create many repeats so we can spin many cycles
+  for(let r=0;r<repeat;r++){
+    players.forEach(p => {
+      const c = document.createElement('div');
+      c.className = 'card';
+      c.dataset.name = p.name;
+      c.innerHTML = `<div class="name">${escapeHtml(p.name)}</div><div class="amt">${Number(p.amt)}</div>`;
+      carousel.appendChild(c);
     });
-
-    drawLines();
-
-    particles.forEach(p=>{
-        p.x += p.speedX;
-        p.y += p.speedY;
-        if(p.x<0||p.x>width) p.speedX*=-1;
-        if(p.y<0||p.y>height) p.speedY*=-1;
-        ctx.fillStyle = 'rgba(200,200,200,0.2)';
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fill();
-    });
-
-    if(!solved || circleOpacity>0){
-        ctx.save();
-        ctx.globalAlpha = 0.5 * circleOpacity;
-        ctx.shadowColor = 'rgba(0,0,0,0.3)';
-        ctx.shadowBlur = 8;
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
-        ctx.fillStyle = 'rgba(200,200,200,1)';
-        ctx.beginPath();
-        ctx.arc(correctX, correctY, 12, 0, Math.PI*2);
-        ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = 'rgba(255,255,255,0.8)';
-        ctx.stroke();
-        ctx.restore();
-
-        if(solved) circleOpacity -= 0.02;
-    }
-
-    requestAnimationFrame(animateCaptcha);
+  }
+  // small layout reflow
+  requestAnimationFrame(()=> {
+    carousel.style.transition = '';
+  });
 }
 
-function drawCaptcha() {
-    width = captchaCanvas.clientWidth;
-    height = captchaCanvas.clientHeight;
-    captchaCanvas.width = width;
-    captchaCanvas.height = height;
-    solved = false;
-    captchaCheck.style.display = 'none';
-    correctX = Math.random() * (width - 40) + 20;
-    correctY = Math.random() * (height - 40) + 20;
-    createParticles();
-    createPoints();
+// Calculate transform to land the chosen card under marker (center)
+function computeTransformForIndex(chosenIndex, playersCount, repeatCount){
+  // chosenIndex is index within the virtual repeated sequence (0..playersCount*repeatCount -1)
+  // Each card width includes gap: compute from DOM
+  const card = carousel.querySelector('.card');
+  if(!card) return 0;
+  const style = getComputedStyle(card);
+  const width = card.offsetWidth;
+  // gap is from carousel layout; assume gap between cards is 12px (same as CSS)
+  const gap = 12;
+  const cardSpace = width + gap;
+  // total width of entire repetition block
+  const totalWidth = playersCount * cardSpace;
+  // center of stage
+  const stageRect = stage.getBoundingClientRect();
+  const center = stageRect.width / 2;
+  // left padding of carousel inside stage: we gave padding-left/right: 40px
+  const carouselStyle = getComputedStyle(carousel);
+  const paddingLeft = parseFloat(carouselStyle.paddingLeft) || 0;
+
+  // target left offset so that chosen card's left + cardSpace/2 aligns with center
+  const chosenLeftInCarousel = chosenIndex * cardSpace + paddingLeft;
+  const desiredTranslateX = center - (chosenLeftInCarousel + (width/2));
+
+  return { desiredTranslateX, totalWidth, cardSpace, chosenLeftInCarousel, width };
 }
 
-captchaCanvas.addEventListener("click", e=>{
-    if(solved) return;
-    const rect = captchaCanvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const distance = Math.hypot(x - correctX, y - correctY);
-    if(distance<=12){
-        solved = true;
-        captchaCheck.style.display='inline-block';
-        setTimeout(()=>{captchaCheck.classList.add('show');},50);
-    } else {
-        showMessage("Špatně, klikněte znovu.","error");
+// main roll function
+function rollOnce(){
+  const players = getPlayers();
+  if(players.length === 0) return;
+
+  // weights array
+  const weights = players.map(p => {
+    const n = Number(p.amt);
+    return (isFinite(n) ? n : 0);
+  });
+
+  // Build a longer list for animation and picking
+  const repeats = 10; // number of times to repeat the players sequence in carousel (affects spin length)
+  buildCarousel(players, repeats);
+
+  // Weighted pick among the base players
+  const chosenBase = weightedRandomIndex(weights);
+
+  // We'll pick a random repeat number near the end so it looks like it spins many cycles
+  const chosenRepeat = Math.floor(Math.random() * (repeats / 2)) + Math.floor(repeats/2);
+  const chosenIndex = chosenRepeat * players.length + chosenBase;
+
+  // compute transform
+  requestAnimationFrame(()=> {
+    const { desiredTranslateX, totalWidth, cardSpace } = computeTransformForIndex(chosenIndex, players.length, repeats);
+    // add extra cycles: move by additional whole blocks to make it spin more
+    const cycles = 3; // extra full-width cycles
+    const finalTranslate = desiredTranslateX - cycles * totalWidth;
+
+    // animate by setting transform
+    // make animation duration depend slightly on cycles for variety
+    const durationMs = 3000 + Math.floor(Math.random() * 700); // between 3000 and 3700ms
+    carousel.style.transition = `transform ${durationMs}ms cubic-bezier(.12,.72,.19,1)`;
+    carousel.style.transform = `translateX(${finalTranslate}px)`;
+
+    // disable UI while rolling
+    rollBtn.disabled = true;
+    addBtn.disabled = true;
+    clearBtn.disabled = true;
+    previewBtn.disabled = true;
+
+    // when transition ends, highlight winner and then reset after a short hold
+    function onEnd(){
+      carousel.removeEventListener('transitionend', onEnd);
+      // clear winner classes
+      document.querySelectorAll('.card.winner').forEach(c => c.classList.remove('winner'));
+
+      // find the exact card element that corresponds to chosenIndex
+      const cards = Array.from(carousel.querySelectorAll('.card'));
+      const chosenCard = cards[chosenIndex];
+      if(chosenCard){
+        chosenCard.classList.add('winner');
+        // scroll slightly so winner nicely centered (sometimes minor rounding)
+        // show winner name
+        const name = chosenCard.dataset.name;
+        lastWinnerSpan.textContent = name;
+      } else {
+        lastWinnerSpan.textContent = players[chosenBase].name;
+      }
+
+      // keep the final state visible for a short moment, then reset HTML to initial empty state
+      // Reset behavior: clear players and carousel
+      setTimeout(() => {
+        resetUI();
+      }, 1500);
     }
+    carousel.addEventListener('transitionend', onEnd);
+  });
+}
+
+function previewWheel(){
+  // Build a static short preview (no random)
+  const players = getPlayers();
+  if(players.length === 0) return;
+  buildCarousel(players, 6);
+  // center the very first card so user sees layout
+  const chosenIndex = Math.floor(players.length * 3.0); // somewhere in middle
+  const { desiredTranslateX } = computeTransformForIndex(chosenIndex, players.length, 6);
+  carousel.style.transition = 'transform 800ms ease-out';
+  carousel.style.transform = `translateX(${desiredTranslateX}px)`;
+}
+
+// Reset to empty initial HTML (clears players and carousel)
+function resetUI(){
+  // remove all children and add one empty row
+  playersList.innerHTML = '';
+  carousel.innerHTML = '';
+  lastWinnerSpan.textContent = '—';
+  // re-enable UI
+  rollBtn.disabled = false;
+  addBtn.disabled = false;
+  clearBtn.disabled = false;
+  previewBtn.disabled = false;
+
+  // add a fresh empty row
+  playersList.appendChild(createPlayerRow('', ''));
+  updateCounts();
+  // ensure carousel transform cleared
+  carousel.style.transition = 'none';
+  carousel.style.transform = 'translateX(0)';
+}
+
+// init
+addBtn.addEventListener('click', () => {
+  playersList.appendChild(createPlayerRow('', ''));
+  updateCounts();
+});
+clearBtn.addEventListener('click', () => {
+  // clear everything immediately
+  playersList.innerHTML = '';
+  playersList.appendChild(createPlayerRow('', ''));
+  updateCounts();
+  carousel.innerHTML = '';
+});
+rollBtn.addEventListener('click', () => {
+  // quick validation: all amounts must be finite numbers (we handle empty as 1)
+  const players = getPlayers();
+  if(players.length === 0) return;
+  // compute number of players with positive weight
+  const positive = players.filter(p => Number(p.amt) > 0).length;
+  // allow pick even if all zero (will fallback to uniform)
+  rollOnce();
+});
+previewBtn.addEventListener('click', previewWheel);
+
+// Create an initial empty row
+playersList.appendChild(createPlayerRow('', ''));
+updateCounts();
+
+// Make UI responsive to enter key: add row when last input's Enter pressed
+playersList.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    playersList.appendChild(createPlayerRow('', ''));
+    updateCounts();
+    // focus new row name field
+    const last = playersList.lastElementChild;
+    last.querySelector('.pname').focus();
+  }
 });
 
-refreshBtn.addEventListener("click", ()=>{ if(!solved) drawCaptcha(); });
-
-drawCaptcha();
-animateCaptcha();
-
-loginBtn.addEventListener("click", ()=>{
-    const email=document.getElementById("email").value.trim();
-    const password=document.getElementById("password").value.trim();
-    if(!email||!password){showMessage("Vyplň prosím všechna pole.","error"); return;}
-    if(!solved){showMessage("Proveďte captcha ověření.","error"); return;}
-    signInWithEmailAndPassword(auth,email,password)
-    .then(()=>{window.location.href="/demo";})
-    .catch(error=>{
-        const msg=error.code==="auth/invalid-credential"?"Nesprávný e-mail nebo heslo.":error.message.replace("Firebase:","").trim();
-        showMessage(msg,"error");
-    });
-});
-
-forgotLink.addEventListener("click",()=>{
-    const email = prompt("Zadej svůj e-mail pro obnovení hesla:");
-    if(!email) return;
-    sendPasswordResetEmail(auth,email)
-    .then(()=>{alert("E-mail pro obnovení hesla byl odeslán!");})
-    .catch(()=>{alert("Nastala chyba při odesílání e-mailu.");});
-});
 </script>
-
 </body>
 </html>
-
-
-
