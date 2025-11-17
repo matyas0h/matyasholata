@@ -223,36 +223,54 @@
 </div>
 </body>
 <script>
-const labelEl = document.getElementById("status-label");
-const statusEl = document.getElementById("status-text");
-const searchIcon = document.getElementById("search-game");
-
-window.addEventListener("DOMContentLoaded", () => {
-    searchIcon.onclick = () => {
-        const game = statusEl.textContent;
-        if (game && game !== "volno") {
-            window.open("https://www.google.com/search?q=" + encodeURIComponent(game));
-        }
-    };
-});
-
+/* -----------------------------------------
+   FIXED SCHEDULE (matches your screenshot)
+----------------------------------------- */
 const schedule = {
   "MONDAY": ["Německý jazyk","Anglický jazyk","Matematika","Čeština","Chemie","Fyzika"],
   "TUESDAY": ["Dějepis","Čeština","Anglický jazyk","Zeměpis","Matematika","Odpolední pauza","Tělocvik","Hudební výchova"],
-  "WEDNESDAY": ["Fyzika","Německý jazyk","Čeština","Přírodopis","Tělocvik","Informatika"],
-  "THURSDAY": ["Matematika","Zeměpis","Německý jazyk","Dějepis","Čeština","Odpolední pauza","Výtvarná Výchova","Občanská výchova"],
-  "FRIDAY": ["Sportovní výchova","Přírodopis","Chemie","Anglický jazyk","Matematika","Praktické činnosti"]
+  "WEDNESDAY": ["ŠČ","Fyzika","Německý jazyk","Čeština","Přírodopis","Tělocvik","Informatika"],
+  "THURSDAY": ["Matematika","Zeměpis","Německý jazyk","Dějepis","Čeština","Odpolední pauza","Výtvarná výchova","Občanská výchova"],
+  "FRIDAY": ["Zdravotní výchova","Výtvarná výchova","Přírodopis","Chemie","Anglický jazyk","Matematika","Praktické činnosti"]
 };
 
+/* -----------------------------------------
+   HOURS WITH BREAKS
+----------------------------------------- */
 const hours = [
-  "07:00-07:45","08:00-08:45","08:55-09:40","10:00-10:45","10:55-11:40",
-  "11:50-12:35","12:45-13:30","13:40-14:25","14:35-15:20","15:30-16:15",
-  "16:30-17:10","17:20-18:05"
+  "07:00-07:45",
+  "08:00-08:45",
+  "08:55-09:40",
+  "10:00-10:45",
+  "10:55-11:40",
+  "11:50-12:35",
+  "12:45-13:30",
+  "13:40-14:25",
+  "14:35-15:20",
+  "15:30-16:15",
+  "16:30-17:10",
+  "17:20-18:05"
 ];
+
+const labelEl = document.getElementById("status-label");
+const statusEl = document.getElementById("status-text");
+
+/* -----------------------------------------
+   NEW SEARCH ICON (added for game only)
+----------------------------------------- */
+let searchIcon = document.createElement("i");
+searchIcon.className = "fa-solid fa-magnifying-glass";
+searchIcon.style.marginLeft = "8px";
+searchIcon.style.cursor = "pointer";
+searchIcon.style.display = "none"; // hidden by default
+statusEl.parentNode.appendChild(searchIcon);
 
 let dot = 0;
 let loading = true;
 
+/* -----------------------------------------
+   Loading animation
+----------------------------------------- */
 function animateLoading() {
   if (!loading) return;
   const dots = ["Načítání.","Načítání..","Načítání..."];
@@ -261,12 +279,18 @@ function animateLoading() {
 }
 setInterval(animateLoading, 400);
 
+/* -----------------------------------------
+   Find lesson OR break
+----------------------------------------- */
 function getCurrentLesson() {
   const now = new Date();
   const day = now.toLocaleString("en-US", { weekday: "long" }).toUpperCase();
+
   if (!schedule[day]) return null;
 
   const min = now.getHours() * 60 + now.getMinutes();
+
+  let previousEnd = null;
 
   for (let i = 0; i < hours.length; i++) {
     const [start, end] = hours[i].split("-");
@@ -276,78 +300,89 @@ function getCurrentLesson() {
     const s = sh * 60 + sm;
     const e = eh * 60 + em;
 
+    if (previousEnd !== null && min > previousEnd && min < s) {
+      return "volno (přestávka)";
+    }
+
     if (min >= s && min <= e) {
       const subject = schedule[day][i];
       return subject === "Odpolední pauza" ? "volno" : subject;
     }
+
+    previousEnd = e;
   }
+
   return null;
 }
 
+/* -----------------------------------------
+   STEAM STATUS FETCH
+----------------------------------------- */
 async function getSteamGame() {
   try {
     const url = "https://steamcommunity.com/id/ydaratit/?xml=1";
-    const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
-    const res = await fetch(proxyUrl);
-    const text = await res.text();
 
-    console.log("Fetched Steam XML:", text);
+    const res = await fetch(
+      "https://api.allorigins.win/raw?url=" +
+      encodeURIComponent(url)
+    );
 
-    const xml = new DOMParser().parseFromString(text, "text/xml");
-    const msg = xml.querySelector("stateMessage");
-    console.log("Parsed stateMessage node:", msg);
+    const xmlText = await res.text();
+    const xml = new DOMParser().parseFromString(xmlText, "text/xml");
+    const state = xml.querySelector("stateMessage");
 
-    if (!msg) {
-      console.warn("No stateMessage element in Steam XML");
-      return null;
-    }
+    if (!state) return null;
 
-    const raw = msg.textContent.trim();
-    console.log("stateMessage content:", raw);
+    const raw = state.textContent.trim();
 
-    if (!raw.startsWith("In-Game")) {
-      console.log("Not in game:", raw);
-      return null;
-    }
+    if (!raw.startsWith("In-Game")) return null;
 
-    const game = raw.replace(/In-Game\s*<br\s*\/?>/i, "").trim();
-    console.log("Detected game:", game);
+    return raw.replace("In-Game", "").replace(/<br\s*\/?>/gi, "").trim();
 
-    return game || null;
-
-  } catch (err) {
-    console.error("Error fetching / parsing Steam XML:", err);
+  } catch {
     return null;
   }
 }
 
+/* -----------------------------------------
+   MAIN STATUS UPDATE
+----------------------------------------- */
 async function updateStatus() {
-    const statusText = document.getElementById("status-text");
-    const label = document.getElementById("status-label");
-    const searchIcon = document.getElementById("search-icon");
+  const lesson = getCurrentLesson();
 
-    if (!statusText || !label || !searchIcon) return;
+  if (lesson) {
+    loading = false;
+    labelEl.textContent = "PRÁVĚ MÁM:";
+    statusEl.textContent = lesson;
+    searchIcon.style.display = "none";
+    return;
+  }
 
-    const game = await getSteamGame(); 
+  const game = await getSteamGame();
+  if (game) {
+    loading = false;
+    labelEl.textContent = "PRÁVĚ HRAJU:";
+    statusEl.textContent = game;
 
-    if (game) {
-        statusText.innerText = game;
-        label.innerText = "PRÁVĚ HRAJU:";
-        searchIcon.style.display = "inline-block";
-        searchIcon.onclick = () => {
-            window.open("https://www.google.com/search?q=" + encodeURIComponent(game), "_blank");
-        };
-    } else {
-        statusText.innerText = "Nothing";
-        label.innerText = "NEHRAJU NIC:";
-        searchIcon.style.display = "none";
-    }
+    searchIcon.style.display = "inline-block";
+    searchIcon.onclick = () => {
+      window.open("https://www.google.com/search?q=" + encodeURIComponent(game));
+    };
+
+    return;
+  }
+
+  loading = false;
+  labelEl.textContent = "PRÁVĚ MÁM:";
+  statusEl.textContent = "volno";
+  searchIcon.style.display = "none";
 }
 
 updateStatus();
 setInterval(updateStatus, 3000);
 </script>
 </html>
+
 
 
 
