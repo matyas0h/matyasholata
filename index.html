@@ -279,7 +279,7 @@ function getCurrentLesson() {
     const e = eh * 60 + em;
 
     if (previousEnd !== null && min > previousEnd && min < s) {
-      return "volno (přestávka)";
+      return "volno";
     }
 
     if (min >= s && min <= e) {
@@ -362,6 +362,7 @@ searchIcon.onclick = () => {
 };
 </script>
 </html>
+
 
 
 
