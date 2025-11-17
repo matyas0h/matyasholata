@@ -194,21 +194,6 @@
     <i id="search-game" class="fa-solid fa-magnifying-glass"
        style="cursor:pointer; margin-left:6px; display:none;"></i>
 </p>
-<script>
-window.addEventListener("DOMContentLoaded", () => {
-
-    const labelEl = document.getElementById("status-label");
-    const statusEl = document.getElementById("status-text");
-    const searchIcon = document.getElementById("search-game");
-
-    searchIcon.onclick = () => {
-        const game = statusEl.textContent;
-        if (game && game !== "volno") {
-            window.open("https://www.google.com/search?q=" + encodeURIComponent(game));
-        }
-    };
-});
-</script>
     <div class="contact-row">
       <a class="email" href="mailto:matyasholata0@gmail.com"><i class="fa-solid fa-envelope"></i> matyasholata0@gmail.com</a>
       <div class="socials">
@@ -238,31 +223,32 @@ window.addEventListener("DOMContentLoaded", () => {
 </div>
 </body>
 <script>
+const labelEl = document.getElementById("status-label");
+const statusEl = document.getElementById("status-text");
+const searchIcon = document.getElementById("search-game");
+
+window.addEventListener("DOMContentLoaded", () => {
+    searchIcon.onclick = () => {
+        const game = statusEl.textContent;
+        if (game && game !== "volno") {
+            window.open("https://www.google.com/search?q=" + encodeURIComponent(game));
+        }
+    };
+});
+
 const schedule = {
   "MONDAY": ["Německý jazyk","Anglický jazyk","Matematika","Čeština","Chemie","Fyzika"],
   "TUESDAY": ["Dějepis","Čeština","Anglický jazyk","Zeměpis","Matematika","Odpolední pauza","Tělocvik","Hudební výchova"],
-  "WEDNESDAY": ["ŠČ","Fyzika","Německý jazyk","Čeština","Přírodopis","Tělocvik","Informatika"],
-  "THURSDAY": ["Matematika","Zeměpis","Německý jazyk","Dějepis","Čeština","Odpolední pauza","Výtvarná výchova","Občanská výchova"],
-  "FRIDAY": ["Zdravotní výchova","Výtvarná výchova","Přírodopis","Chemie","Anglický jazyk","Matematika","Praktické činnosti"]
+  "WEDNESDAY": ["Fyzika","Německý jazyk","Čeština","Přírodopis","Tělocvik","Informatika"],
+  "THURSDAY": ["Matematika","Zeměpis","Německý jazyk","Dějepis","Čeština","Odpolední pauza","Výtvarná Výchova","Občanská výchova"],
+  "FRIDAY": ["Sportovní výchova","Přírodopis","Chemie","Anglický jazyk","Matematika","Praktické činnosti"]
 };
 
 const hours = [
-  "07:00-07:45",
-  "08:00-08:45",
-  "08:55-09:40",
-  "10:00-10:45",
-  "10:55-11:40",
-  "11:50-12:35",
-  "12:45-13:30",
-  "13:40-14:25",
-  "14:35-15:20",
-  "15:30-16:15",
-  "16:30-17:10",
-  "17:20-18:05"
+  "07:00-07:45","08:00-08:45","08:55-09:40","10:00-10:45","10:55-11:40",
+  "11:50-12:35","12:45-13:30","13:40-14:25","14:35-15:20","15:30-16:15",
+  "16:30-17:10","17:20-18:05"
 ];
-
-const labelEl = document.getElementById("status-label");
-const statusEl = document.getElementById("status-text");
 
 let dot = 0;
 let loading = true;
@@ -278,12 +264,9 @@ setInterval(animateLoading, 400);
 function getCurrentLesson() {
   const now = new Date();
   const day = now.toLocaleString("en-US", { weekday: "long" }).toUpperCase();
-
   if (!schedule[day]) return null;
 
   const min = now.getHours() * 60 + now.getMinutes();
-
-  let previousEnd = null;
 
   for (let i = 0; i < hours.length; i++) {
     const [start, end] = hours[i].split("-");
@@ -293,41 +276,29 @@ function getCurrentLesson() {
     const s = sh * 60 + sm;
     const e = eh * 60 + em;
 
-    if (previousEnd !== null && min > previousEnd && min < s) {
-      return "přestávka";
-    }
-
     if (min >= s && min <= e) {
       const subject = schedule[day][i];
       return subject === "Odpolední pauza" ? "volno" : subject;
     }
-
-    previousEnd = e;
   }
-
   return null;
 }
 
 async function getSteamGame() {
   try {
     const url = "https://steamcommunity.com/id/ydaratit/?xml=1";
+    const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
+    const text = await res.text();
 
-    const res = await fetch(
-      "https://api.allorigins.win/raw?url=" +
-      encodeURIComponent(url)
-    );
+    const xml = new DOMParser().parseFromString(text, "text/xml");
+    const msg = xml.querySelector("stateMessage");
+    if (!msg) return null;
 
-    const xmlText = await res.text();
-    const xml = new DOMParser().parseFromString(xmlText, "text/xml");
-    const state = xml.querySelector("stateMessage");
-
-    if (!state) return null;
-
-    const raw = state.textContent.trim();
-
+    const raw = msg.innerHTML || msg.textContent;
     if (!raw.startsWith("In-Game")) return null;
 
-    return raw.replace("In-Game", "").replace(/<br\s*\/?>/gi, "").trim();
+    const game = raw.replace(/In-Game\s*<br\s*\/?>\s*/i, "").trim();
+    return game || null;
 
   } catch {
     return null;
@@ -337,11 +308,10 @@ async function getSteamGame() {
 async function updateStatus() {
   const lesson = getCurrentLesson();
 
-  if (lesson) {
+  if (lesson && lesson !== "volno") {
     loading = false;
     labelEl.textContent = "PRÁVĚ MÁM:";
     statusEl.textContent = lesson;
-
     searchIcon.style.display = "none";
     return;
   }
@@ -351,7 +321,6 @@ async function updateStatus() {
     loading = false;
     labelEl.textContent = "PRÁVĚ HRAJU:";
     statusEl.textContent = game;
-
     searchIcon.style.display = "inline-block";
     return;
   }
@@ -359,7 +328,6 @@ async function updateStatus() {
   loading = false;
   labelEl.textContent = "PRÁVĚ MÁM:";
   statusEl.textContent = "volno";
-
   searchIcon.style.display = "none";
 }
 
@@ -367,6 +335,7 @@ updateStatus();
 setInterval(updateStatus, 3000);
 </script>
 </html>
+
 
 
 
