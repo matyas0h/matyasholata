@@ -6,16 +6,6 @@
 <title>matyasholata.cz</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js" crossorigin="anonymous"></script>
-<script>
-const searchIcon = document.getElementById("search-game");
-
-searchIcon.onclick = () => {
-    const game = statusEl.textContent;
-    if (game && game !== "volno") {
-        window.open("https://www.google.com/search?q=" + encodeURIComponent(game));
-    }
-};
-</script>
 <style>
   * {
     margin: 0;
@@ -198,12 +188,27 @@ searchIcon.onclick = () => {
     <p>
       Full-Stack <u title="Full-stack je vývojář, který umí vytvářet jak viditelnou část aplikace, tak i její zázemí na serveru.">(?)</u> vývoj a design webů.
     </p>
-    <p class="playing">
-        <span id="status-label">PRÁVĚ MÁM:</span><br>
-        <span id="status-text" style="font-weight:600;">volno</span> 
-        <i id="search-game" class="fa-solid fa-magnifying-glass" 
-           style="cursor:pointer; margin-left:6px; display:none;"></i>
-    </p>
+<p class="playing">
+    <span id="status-label">PRÁVĚ MÁM:</span><br>
+    <span id="status-text" style="font-weight:600;">volno</span>
+    <i id="search-game" class="fa-solid fa-magnifying-glass"
+       style="cursor:pointer; margin-left:6px; display:none;"></i>
+</p>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+
+    const labelEl = document.getElementById("status-label");
+    const statusEl = document.getElementById("status-text");
+    const searchIcon = document.getElementById("search-game");
+
+    searchIcon.onclick = () => {
+        const game = statusEl.textContent;
+        if (game && game !== "volno") {
+            window.open("https://www.google.com/search?q=" + encodeURIComponent(game));
+        }
+    };
+});
+</script>
     <div class="contact-row">
       <a class="email" href="mailto:matyasholata0@gmail.com"><i class="fa-solid fa-envelope"></i> matyasholata0@gmail.com</a>
       <div class="socials">
@@ -362,6 +367,7 @@ updateStatus();
 setInterval(updateStatus, 3000);
 </script>
 </html>
+
 
 
 
