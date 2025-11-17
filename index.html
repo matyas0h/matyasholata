@@ -358,19 +358,19 @@ async function updateStatus() {
     return;
   }
 
-  const game = await getSteamGame();
-  if (game) {
+const game = await getSteamGame();
+if (game) {
     loading = false;
     labelEl.textContent = "PRÁVĚ HRAJU:";
     statusEl.textContent = game;
 
     searchIcon.style.display = "inline-block";
     searchIcon.onclick = () => {
-      window.open("https://www.google.com/search?q=" + encodeURIComponent(game));
+        window.open("https://www.google.com/search?q=" + encodeURIComponent(game), "_blank");
     };
 
     return;
-  }
+}
 
   loading = false;
   labelEl.textContent = "PRÁVĚ MÁM:";
@@ -382,6 +382,7 @@ updateStatus();
 setInterval(updateStatus, 3000);
 </script>
 </html>
+
 
 
 
