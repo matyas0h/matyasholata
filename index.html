@@ -255,16 +255,6 @@ const hours = [
 const labelEl = document.getElementById("status-label");
 const statusEl = document.getElementById("status-text");
 
-/* -----------------------------------------
-   NEW SEARCH ICON (added for game only)
------------------------------------------ */
-let searchIcon = document.createElement("i");
-searchIcon.className = "fa-solid fa-magnifying-glass";
-searchIcon.style.marginLeft = "8px";
-searchIcon.style.cursor = "pointer";
-searchIcon.style.display = "none"; // hidden by default
-statusEl.parentNode.appendChild(searchIcon);
-
 let dot = 0;
 let loading = true;
 
@@ -300,10 +290,12 @@ function getCurrentLesson() {
     const s = sh * 60 + sm;
     const e = eh * 60 + em;
 
+    // check break BEFORE this lesson
     if (previousEnd !== null && min > previousEnd && min < s) {
       return "volno (přestávka)";
     }
 
+    // inside a lesson
     if (min >= s && min <= e) {
       const subject = schedule[day][i];
       return subject === "Odpolední pauza" ? "volno" : subject;
@@ -316,7 +308,7 @@ function getCurrentLesson() {
 }
 
 /* -----------------------------------------
-   STEAM STATUS FETCH
+   Simplest working STEAM STATUS FETCH
 ----------------------------------------- */
 async function getSteamGame() {
   try {
@@ -353,35 +345,43 @@ async function updateStatus() {
   if (lesson) {
     loading = false;
     labelEl.textContent = "PRÁVĚ MÁM:";
-    statusEl.textContent = lesson;
-    searchIcon.style.display = "none";
+    statusEl.innerHTML = lesson;
     return;
   }
 
-const game = await getSteamGame();
-if (game) {
+  const game = await getSteamGame();
+  if (game) {
     loading = false;
     labelEl.textContent = "PRÁVĚ HRAJU:";
-    statusEl.textContent = game;
 
-    searchIcon.style.display = "inline-block";
-    searchIcon.onclick = () => {
-        window.open("https://www.google.com/search?q=" + encodeURIComponent(game), "_blank");
+    const googleUrl = "https://www.google.com/search?q=" + encodeURIComponent(game);
+
+    statusEl.innerHTML = `
+      ${game}
+      <span id="searchIcon" style="cursor:pointer; margin-left:8px; vertical-align:middle;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 640 640">
+          <path d="M480 272C480 317.9 465.1 360.3 440 394.7L566.6 521.4C579.1 533.9 579.1 554.2 566.6 566.7C554.1 579.2 533.8 579.2 521.3 566.7L394.7 440C360.3 465.1 317.9 480 272 480C157.1 480 64 386.9 64 272C64 157.1 157.1 64 272 64C386.9 64 480 157.1 480 272zM272 416C351.5 416 416 351.5 416 272C416 192.5 351.5 128 272 128C192.5 128 128 192.5 128 272C128 351.5 192.5 416 272 416z"/>
+        </svg>
+      </span>
+    `;
+
+    document.getElementById("searchIcon").onclick = () => {
+      window.open(googleUrl, "_blank");
     };
 
     return;
-}
+  }
 
   loading = false;
   labelEl.textContent = "PRÁVĚ MÁM:";
   statusEl.textContent = "volno";
-  searchIcon.style.display = "none";
 }
 
 updateStatus();
 setInterval(updateStatus, 3000);
 </script>
 </html>
+
 
 
 
