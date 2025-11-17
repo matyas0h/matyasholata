@@ -6,6 +6,16 @@
 <title>matyasholata.cz</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js" crossorigin="anonymous"></script>
+<script>
+const searchIcon = document.getElementById("search-game");
+
+searchIcon.onclick = () => {
+    const game = statusEl.textContent;
+    if (game && game !== "volno") {
+        window.open("https://www.google.com/search?q=" + encodeURIComponent(game));
+    }
+};
+</script>
 <style>
   * {
     margin: 0;
@@ -279,7 +289,7 @@ function getCurrentLesson() {
     const e = eh * 60 + em;
 
     if (previousEnd !== null && min > previousEnd && min < s) {
-      return "volno";
+      return "přestávka";
     }
 
     if (min >= s && min <= e) {
@@ -351,17 +361,8 @@ async function updateStatus() {
 updateStatus();
 setInterval(updateStatus, 3000);
 </script>
-<script>
-const searchIcon = document.getElementById("search-game");
-
-searchIcon.onclick = () => {
-    const game = statusEl.textContent;
-    if (game && game !== "volno") {
-        window.open("https://www.google.com/search?q=" + encodeURIComponent(game));
-    }
-};
-</script>
 </html>
+
 
 
 
