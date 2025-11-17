@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio Card</title>
+<title>matyasholata.cz</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js" crossorigin="anonymous"></script>
 <style>
@@ -221,18 +221,33 @@
 </div>
 </body>
 <script>
+/* -----------------------------------------
+   FIXED SCHEDULE (matches your screenshot)
+----------------------------------------- */
 const schedule = {
   "MONDAY": ["Německý jazyk","Anglický jazyk","Matematika","Čeština","Chemie","Fyzika"],
   "TUESDAY": ["Dějepis","Čeština","Anglický jazyk","Zeměpis","Matematika","Odpolední pauza","Tělocvik","Hudební výchova"],
-  "WEDNESDAY": ["Fyzika","Německý jazyk","Čeština","Přírodopis","Tělocvik","Informatika"],
-  "THURSDAY": ["Matematika","Zeměpis","Německý jazyk","Dějepis","Čeština","Odpolední pauza","Výtvarná Výchova","Občanská výchova"],
-  "FRIDAY": ["Sportovní výchova","Přírodopis","Chemie","Anglický jazyk","Matematika","Praktické činnosti"]
+  "WEDNESDAY": ["ŠČ","Fyzika","Německý jazyk","Čeština","Přírodopis","Tělocvik","Informatika"],
+  "THURSDAY": ["Matematika","Zeměpis","Německý jazyk","Dějepis","Čeština","Odpolední pauza","Výtvarná výchova","Občanská výchova"],
+  "FRIDAY": ["Zdravotní výchova","Výtvarná výchova","Přírodopis","Chemie","Anglický jazyk","Matematika","Praktické činnosti"]
 };
 
+/* -----------------------------------------
+   HOURS WITH BREAKS
+----------------------------------------- */
 const hours = [
-  "07:00-07:45","08:00-08:45","08:55-09:40","10:00-10:45","10:55-11:40",
-  "11:50-12:35","12:45-13:30","13:40-14:25","14:35-15:20","15:30-16:15",
-  "16:30-17:10","17:20-18:05"
+  "07:00-07:45",
+  "08:00-08:45",
+  "08:55-09:40",
+  "10:00-10:45",
+  "10:55-11:40",
+  "11:50-12:35",
+  "12:45-13:30",
+  "13:40-14:25",
+  "14:35-15:20",
+  "15:30-16:15",
+  "16:30-17:10",
+  "17:20-18:05"
 ];
 
 const labelEl = document.getElementById("status-label");
@@ -241,6 +256,9 @@ const statusEl = document.getElementById("status-text");
 let dot = 0;
 let loading = true;
 
+/* -----------------------------------------
+   Loading animation
+----------------------------------------- */
 function animateLoading() {
   if (!loading) return;
   const dots = ["Načítání.","Načítání..","Načítání..."];
@@ -249,12 +267,18 @@ function animateLoading() {
 }
 setInterval(animateLoading, 400);
 
+/* -----------------------------------------
+   Find lesson OR break
+----------------------------------------- */
 function getCurrentLesson() {
   const now = new Date();
   const day = now.toLocaleString("en-US", { weekday: "long" }).toUpperCase();
+
   if (!schedule[day]) return null;
 
   const min = now.getHours() * 60 + now.getMinutes();
+
+  let previousEnd = null;
 
   for (let i = 0; i < hours.length; i++) {
     const [start, end] = hours[i].split("-");
@@ -264,39 +288,61 @@ function getCurrentLesson() {
     const s = sh * 60 + sm;
     const e = eh * 60 + em;
 
+    // check break BEFORE this lesson
+    if (previousEnd !== null && min > previousEnd && min < s) {
+      return "volno (přestávka)";
+    }
+
+    // inside a lesson
     if (min >= s && min <= e) {
       const subject = schedule[day][i];
       return subject === "Odpolední pauza" ? "volno" : subject;
     }
+
+    previousEnd = e;
   }
+
   return null;
 }
 
+/* -----------------------------------------
+   Simplest working STEAM STATUS FETCH
+----------------------------------------- */
 async function getSteamGame() {
   try {
     const url = "https://steamcommunity.com/id/ydaratit/?xml=1";
-    const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
-    const text = await res.text();
 
-    const xml = new DOMParser().parseFromString(text, "text/xml");
-    const msg = xml.querySelector("stateMessage");
-    if (!msg) return null;
+    // AllOrigins RAW proxy (CORS fixed)
+    const res = await fetch(
+      "https://api.allorigins.win/raw?url=" +
+      encodeURIComponent(url)
+    );
 
-    const raw = msg.innerHTML || msg.textContent;
+    const xmlText = await res.text();
+    const xml = new DOMParser().parseFromString(xmlText, "text/xml");
+    const state = xml.querySelector("stateMessage");
+
+    if (!state) return null;
+
+    const raw = state.textContent.trim();
+
     if (!raw.startsWith("In-Game")) return null;
 
-    const game = raw.replace(/In-Game\s*<br\s*\/?>\s*/i, "").trim();
-    return game || null;
+    // remove “In-Game <br>”
+    return raw.replace("In-Game", "").replace(/<br\s*\/?>/gi, "").trim();
 
   } catch {
     return null;
   }
 }
 
+/* -----------------------------------------
+   MAIN STATUS UPDATE
+----------------------------------------- */
 async function updateStatus() {
   const lesson = getCurrentLesson();
 
-  if (lesson && lesson !== "volno") {
+  if (lesson) {
     loading = false;
     labelEl.textContent = "PRÁVĚ MÁM:";
     statusEl.textContent = lesson;
