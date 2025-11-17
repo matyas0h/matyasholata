@@ -287,20 +287,36 @@ function getCurrentLesson() {
 async function getSteamGame() {
   try {
     const url = "https://steamcommunity.com/id/ydaratit/?xml=1";
-    const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
+    const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
+    const res = await fetch(proxyUrl);
     const text = await res.text();
+
+    console.log("Fetched Steam XML:", text);
 
     const xml = new DOMParser().parseFromString(text, "text/xml");
     const msg = xml.querySelector("stateMessage");
-    if (!msg) return null;
+    console.log("Parsed stateMessage node:", msg);
 
-    const raw = msg.innerHTML || msg.textContent;
-    if (!raw.startsWith("In-Game")) return null;
+    if (!msg) {
+      console.warn("No stateMessage element in Steam XML");
+      return null;
+    }
 
-    const game = raw.replace(/In-Game\s*<br\s*\/?>\s*/i, "").trim();
+    const raw = msg.textContent.trim();
+    console.log("stateMessage content:", raw);
+
+    if (!raw.startsWith("In-Game")) {
+      console.log("Not in game:", raw);
+      return null;
+    }
+
+    const game = raw.replace(/In-Game\s*<br\s*\/?>/i, "").trim();
+    console.log("Detected game:", game);
+
     return game || null;
 
-  } catch {
+  } catch (err) {
+    console.error("Error fetching / parsing Steam XML:", err);
     return null;
   }
 }
@@ -335,6 +351,7 @@ updateStatus();
 setInterval(updateStatus, 3000);
 </script>
 </html>
+
 
 
 
