@@ -322,35 +322,33 @@ async function getSteamGame() {
 }
 
 async function updateStatus() {
-  const lesson = getCurrentLesson();
+    const statusText = document.getElementById("status-text");
+    const label = document.getElementById("status-label");
+    const searchIcon = document.getElementById("search-icon");
 
-  if (lesson && lesson !== "volno") {
-    loading = false;
-    labelEl.textContent = "PRÁVĚ MÁM:";
-    statusEl.textContent = lesson;
-    searchIcon.style.display = "none";
-    return;
-  }
+    if (!statusText || !label || !searchIcon) return;
 
-  const game = await getSteamGame();
-  if (game) {
-    loading = false;
-    labelEl.textContent = "PRÁVĚ HRAJU:";
-    statusEl.textContent = game;
-    searchIcon.style.display = "inline-block";
-    return;
-  }
+    const game = await getSteamGame(); 
 
-  loading = false;
-  labelEl.textContent = "PRÁVĚ MÁM:";
-  statusEl.textContent = "volno";
-  searchIcon.style.display = "none";
+    if (game) {
+        statusText.innerText = game;
+        label.innerText = "PRÁVĚ HRAJU:";
+        searchIcon.style.display = "inline-block";
+        searchIcon.onclick = () => {
+            window.open("https://www.google.com/search?q=" + encodeURIComponent(game), "_blank");
+        };
+    } else {
+        statusText.innerText = "Nothing";
+        label.innerText = "NEHRAJU NIC:";
+        searchIcon.style.display = "none";
+    }
 }
 
 updateStatus();
 setInterval(updateStatus, 3000);
 </script>
 </html>
+
 
 
 
