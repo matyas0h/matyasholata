@@ -189,8 +189,10 @@
       Full-Stack <u title="Full-stack je vývojář, který umí vytvářet jak viditelnou část aplikace, tak i její zázemí na serveru.">(?)</u> vývoj a design webů.
     </p>
     <p class="playing">
-    <span id="status-label">PRÁVĚ MÁM:</span><br>
-    <span id="status-text" style="font-weight:600;">Načítání...</span>
+        <span id="status-label">PRÁVĚ MÁM:</span><br>
+        <span id="status-text" style="font-weight:600;">volno</span> 
+        <i id="search-game" class="fa-solid fa-magnifying-glass" 
+           style="cursor:pointer; margin-left:6px; display:none;"></i>
     </p>
     <div class="contact-row">
       <a class="email" href="mailto:matyasholata0@gmail.com"><i class="fa-solid fa-envelope"></i> matyasholata0@gmail.com</a>
@@ -221,9 +223,6 @@
 </div>
 </body>
 <script>
-/* -----------------------------------------
-   FIXED SCHEDULE (matches your screenshot)
------------------------------------------ */
 const schedule = {
   "MONDAY": ["Německý jazyk","Anglický jazyk","Matematika","Čeština","Chemie","Fyzika"],
   "TUESDAY": ["Dějepis","Čeština","Anglický jazyk","Zeměpis","Matematika","Odpolední pauza","Tělocvik","Hudební výchova"],
@@ -232,9 +231,6 @@ const schedule = {
   "FRIDAY": ["Zdravotní výchova","Výtvarná výchova","Přírodopis","Chemie","Anglický jazyk","Matematika","Praktické činnosti"]
 };
 
-/* -----------------------------------------
-   HOURS WITH BREAKS
------------------------------------------ */
 const hours = [
   "07:00-07:45",
   "08:00-08:45",
@@ -256,9 +252,6 @@ const statusEl = document.getElementById("status-text");
 let dot = 0;
 let loading = true;
 
-/* -----------------------------------------
-   Loading animation
------------------------------------------ */
 function animateLoading() {
   if (!loading) return;
   const dots = ["Načítání.","Načítání..","Načítání..."];
@@ -267,9 +260,6 @@ function animateLoading() {
 }
 setInterval(animateLoading, 400);
 
-/* -----------------------------------------
-   Find lesson OR break
------------------------------------------ */
 function getCurrentLesson() {
   const now = new Date();
   const day = now.toLocaleString("en-US", { weekday: "long" }).toUpperCase();
@@ -288,12 +278,10 @@ function getCurrentLesson() {
     const s = sh * 60 + sm;
     const e = eh * 60 + em;
 
-    // check break BEFORE this lesson
     if (previousEnd !== null && min > previousEnd && min < s) {
       return "volno (přestávka)";
     }
 
-    // inside a lesson
     if (min >= s && min <= e) {
       const subject = schedule[day][i];
       return subject === "Odpolední pauza" ? "volno" : subject;
@@ -305,14 +293,10 @@ function getCurrentLesson() {
   return null;
 }
 
-/* -----------------------------------------
-   Simplest working STEAM STATUS FETCH
------------------------------------------ */
 async function getSteamGame() {
   try {
     const url = "https://steamcommunity.com/id/ydaratit/?xml=1";
 
-    // AllOrigins RAW proxy (CORS fixed)
     const res = await fetch(
       "https://api.allorigins.win/raw?url=" +
       encodeURIComponent(url)
@@ -328,7 +312,6 @@ async function getSteamGame() {
 
     if (!raw.startsWith("In-Game")) return null;
 
-    // remove “In-Game <br>”
     return raw.replace("In-Game", "").replace(/<br\s*\/?>/gi, "").trim();
 
   } catch {
@@ -336,9 +319,6 @@ async function getSteamGame() {
   }
 }
 
-/* -----------------------------------------
-   MAIN STATUS UPDATE
------------------------------------------ */
 async function updateStatus() {
   const lesson = getCurrentLesson();
 
@@ -346,6 +326,8 @@ async function updateStatus() {
     loading = false;
     labelEl.textContent = "PRÁVĚ MÁM:";
     statusEl.textContent = lesson;
+
+    searchIcon.style.display = "none";
     return;
   }
 
@@ -354,18 +336,33 @@ async function updateStatus() {
     loading = false;
     labelEl.textContent = "PRÁVĚ HRAJU:";
     statusEl.textContent = game;
+
+    searchIcon.style.display = "inline-block";
     return;
   }
 
   loading = false;
   labelEl.textContent = "PRÁVĚ MÁM:";
   statusEl.textContent = "volno";
+
+  searchIcon.style.display = "none";
 }
 
 updateStatus();
 setInterval(updateStatus, 3000);
 </script>
+<script>
+const searchIcon = document.getElementById("search-game");
+
+searchIcon.onclick = () => {
+    const game = statusEl.textContent;
+    if (game && game !== "volno") {
+        window.open("https://www.google.com/search?q=" + encodeURIComponent(game));
+    }
+};
+</script>
 </html>
+
 
 
 
