@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Webhook Test</title>
+  </head>
+  <body>
+    <script>
+      fetch("https://discord.com/api/webhooks/1400509603992703147/0CC0N9ZVsq1wTOKe_TC8jvhyoXSV0uOVaNKxU9IHbFOoGejOEUxt-Lh5zRTUsz2gqBbj", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          content: "test"
+        })
+      });
+    </script>
+  </body>
+</html>
