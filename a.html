@@ -1,241 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NFC Presence Demo</title>
+    <meta charset="UTF-8">
+    <title>xdd</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-<style>
-:root{
-  --bg:#f6f9fc;
-  --panel:#ffffff;
-  --text:#0a2540;
-  --muted:#6b7c93;
-  --accent:#635bff;
-  --success:#34c759;
-  --shadow:0 30px 60px rgba(15,23,42,.12);
-}
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  min-height:100vh;
-  background:linear-gradient(#ffffff,var(--bg));
-  font-family:-apple-system,BlinkMacSystemFont,Inter,Segoe UI,Roboto,Arial;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--text);
-}
-
-.app{
-  width:100%;
-  max-width:840px;
-  padding:32px;
-}
-
-.card{
-  background:var(--panel);
-  border-radius:28px;
-  padding:40px;
-  box-shadow:var(--shadow);
-}
-
-h1{
-  margin:0 0 6px;
-  font-size:1.8rem;
-  letter-spacing:-0.02em;
-  text-align:center;
-}
-p{
-  margin:0 0 28px;
-  color:var(--muted);
-  text-align:center;
-}
-
-.stage{
-  height:420px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-}
-
-.phone{
-  width:190px;
-  height:380px;
-  border-radius:36px;
-  background:linear-gradient(#f8fbff,#e9edf4);
-  box-shadow:
-    inset 0 0 0 6px #0b0b0b,
-    0 40px 80px rgba(0,0,0,.25);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:transform .5s cubic-bezier(.22,1,.36,1);
-}
-
-.phone.active{
-  transform:scale(1.03) translateY(-10px);
-}
-
-.screen{
-  width:86%;
-  height:86%;
-  background:linear-gradient(#ffffff,#f1f3f7);
-  border-radius:28px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--muted);
-  font-weight:600;
-}
-
-.ripple{
-  position:absolute;
-  width:30px;
-  height:30px;
-  border-radius:50%;
-  background:var(--accent);
-  opacity:0;
-  transform:translate(-50%,-50%) scale(1);
-}
-
-.check{
-  position:absolute;
-  width:92px;
-  height:92px;
-  border-radius:50%;
-  background:var(--success);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  transform:scale(.6);
-  transition:all .4s cubic-bezier(.22,1,.36,1);
-  box-shadow:0 20px 40px rgba(52,199,89,.4);
-}
-
-.check.show{
-  opacity:1;
-  transform:scale(1);
-}
-
-.check svg{
-  width:42px;
-  height:42px;
-  stroke:#fff;
-  stroke-width:4;
-  fill:none;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.controls{
-  margin-top:30px;
-  display:flex;
-  justify-content:center;
-}
-
-button{
-  padding:14px 26px;
-  border-radius:999px;
-  border:none;
-  background:var(--accent);
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-  box-shadow:0 14px 30px rgba(99,91,255,.4);
-}
-button:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-}
-</style>
+        .full-screen-image {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover; /* fills the screen */
+            display: block;
+        }
+    </style>
 </head>
-
 <body>
-<div class="app">
-  <div class="card">
-    <h1>NFC Presence Detection</h1>
-    <p>Triggers animation when an NFC interaction occurs. No data is read.</p>
-
-    <div class="stage" id="stage">
-      <div class="phone" id="phone">
-        <div class="screen" id="screen">Hold NFC near device</div>
-      </div>
-      <div class="check" id="check">
-        <svg viewBox="0 0 24 24">
-          <path d="M20 6L9 17l-5-5"/>
-        </svg>
-      </div>
-    </div>
-
-    <div class="controls">
-      <button id="start">Start NFC</button>
-    </div>
-  </div>
-</div>
-
-<script>
-const startBtn = document.getElementById('start');
-const phone = document.getElementById('phone');
-const screen = document.getElementById('screen');
-const stage = document.getElementById('stage');
-const check = document.getElementById('check');
-
-startBtn.onclick = async () => {
-  if(!('NDEFReader' in window)){
-    alert('Web NFC not supported on this device/browser.');
-    return;
-  }
-
-  try{
-    const reader = new NDEFReader();
-    await reader.scan();
-    startBtn.disabled = true;
-    screen.textContent = 'Listening…';
-
-    reader.onreading = () => {
-      triggerAnimation();
-    };
-
-  }catch(err){
-    alert('NFC permission denied or unavailable.');
-  }
-};
-
-function triggerAnimation(){
-  phone.classList.add('active');
-
-  for(let i=0;i<3;i++){
-    const r = document.createElement('div');
-    r.className = 'ripple';
-    r.style.left = '50%';
-    r.style.top = '50%';
-    stage.appendChild(r);
-
-    r.animate([
-      {opacity:.3, transform:'translate(-50%,-50%) scale(1)'},
-      {opacity:0, transform:'translate(-50%,-50%) scale(12)'}
-    ],{
-      duration:1200,
-      delay:i*200,
-      easing:'cubic-bezier(.22,1,.36,1)'
-    });
-
-    setTimeout(()=>r.remove(),1500);
-  }
-
-  setTimeout(()=>check.classList.add('show'),900);
-
-  setTimeout(()=>{
-    phone.classList.remove('active');
-    check.classList.remove('show');
-    screen.textContent = 'Listening…';
-  },2600);
-}
-</script>
+    <img src="IMG_2509.jpeg" alt="krasavec" class="full-screen-image">
 </body>
 </html>
