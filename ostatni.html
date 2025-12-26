@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>matyasholata.cz</title>
+  <link rel="icon" type="image/png" href="https://matyasholata.cz/mh-ico.png">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"
+    crossorigin="anonymous"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Syne', sans-serif;
+    }
+
+    body {
+      background-color: #000000;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: flex-start;
+      max-width: none;
+    }
+
+    .logo img {
+      width: 60px;
+      margin-bottom: -20px;
+    }
+
+    h1 {
+      font-weight: 800;
+      font-size: 2rem;
+    }
+
+    .dual-content {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .left-block,
+    .right-block {
+      white-space: nowrap;
+      text-align: left;
+    }
+
+    .bottom-links {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .bottom-links a {
+      text-decoration: underline;
+      color: white;
+      font-style: oblique;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        flex-direction: column;
+        gap: 30px;
+        align-items: center;
+      }
+
+      .dual-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+      }
+
+      .left-block,
+      .right-block {
+        white-space: normal;
+        text-align: center;
+      }
+
+      .bottom-links {
+        justify-content: center;
+      }
+    }
+
+    #cookie-banner {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      width: calc(100% - 40px);
+      max-width: 900px;
+      opacity: 0;
+      animation: cookieIn 0.6s ease forwards;
+    }
+
+    .cookie-inner {
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      border-radius: 25px;
+      padding: 25px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .cookie-text h3 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .cookie-text p {
+      font-size: 1rem;
+      opacity: 0.85;
+      line-height: 1.5;
+      max-width: 520px;
+    }
+
+    .cookie-actions {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .cookie-btn {
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: 0.25s ease;
+      border: none;
+    }
+
+    .cookie-btn.primary {
+      background: white;
+      color: black;
+    }
+
+    .cookie-btn.primary:hover {
+      transform: translateY(-1px);
+    }
+
+    .cookie-btn.ghost {
+      background: transparent;
+      color: white;
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .cookie-btn.ghost:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-1px);
+    }
+
+    @keyframes cookieIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .cookie-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .cookie-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cookie-banner">
+    <div class="cookie-inner">
+      <div class="cookie-text">
+        <h3>🍪 Cookies</h3>
+        <p>
+          matyasholata.cz používá cookies, malé soubory ukládané do vašeho zařízení, které pomáhají zlepšit funkčnost
+          webu, analyzovat návštěvnost a přizpůsobit obsah.
+        </p>
+      </div>
+      <div class="cookie-actions">
+        <button class="cookie-btn ghost" onclick="rejectCookies()">Odmítnout</button>
+        <button class="cookie-btn primary" onclick="acceptCookies()">Souhlasím</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const banner = document.getElementById("cookie-banner");
+
+    if (localStorage.getItem("cookiesAccepted")) {
+      banner.style.display = "none";
+    }
+
+    function acceptCookies() {
+      localStorage.setItem("cookiesAccepted", "true");
+      banner.remove();
+    }
+
+    function rejectCookies() {
+      localStorage.setItem("cookiesAccepted", "false");
+      banner.remove();
+    }
+  </script>
+  <div class="container">
+    <div class="info">
+      <div class="logo"><img src="https://matyasholata.cz/mh-ico.png"></div>
+      <h1>matyasholata.cz</h1>
+
+      <div class="dual-content">
+        <div class="left-block">
+          <h2>vybavení:</h2>
+          - grafická karta: <b>NVIDIA GeForce RTX 4060 (8GB)</b><br>
+          - procesor: <b>AMD Ryzen 5 5600X 6-Core</b><br>
+          - paměť: <b>DDR4 32GB</b><br>
+          - disk: <b>KINGSTON SNV3S1000G (1TB)</b><br>
+          <br>
+          - monitor 1: <b>MSI MAG 274CQF, 180Hz 2560 × 1440</b><br>
+          - monitor 2: <b>MSI Optix G24C4, 144hz 1920 × 1080</b><br>
+          <br>
+          - myš: <b>Razer DeathAdder Essential</b><br>
+          - klávesnice: <b>Akko 5075BP Akko Dracula (US)</b><br>
+          - sluchátka: <b>Roseland GE015877</b><br>
+          - podložka: <b>Logitech G840 XL</b><br>
+        </div>
+
+        <div class="right-block">
+          <h2>co vše používám:</h2>
+          - programovaní (HTML, CSS, JS): <br><b style="margin-left: 10px;">Visual Studio Code</b><br>
+          <span style="margin-left: 10px;">+ pluginy <b>Live Preview</b> a <b>Live Server</b></span><br>
+          <br>
+          - programovaní (aplikace): <br><b style="margin-left: 10px;">Visual Studio</b><br>
+          <b style="margin-left: 10px;">Python</b><br><br>
+          - vše ostatní: <br><b style="margin-left: 10px;">paint.net</b> (editování fotek, grafika, úpravy)<br>
+          <b style="margin-left: 10px;">Figma</b> (design stránek, programů)<br>
+          <b style="margin-left: 10px;">Google Chrome</b> (prohlížeč)<br>
+        </div>
+      </div>
+
+      <div class="bottom-links">
+        <a href="projekty">projekty</a>
+        <a href="demo">demo stránka</a>
+        <a href="uvod">zpět na domovskou stránku</a>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
